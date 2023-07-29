@@ -1,31 +1,74 @@
 #include <bits/stdc++.h>
 using namespace std;
 vector<vector<int>> ans;
-void permute(vector<int> &a, int idx)
+// void allPosPermute(vector<int> &a, int idx)
+// {
+//     if (idx == a.size())
+//     {
+//         ans.push_back(a);
+//         return;
+//     }
+//     for (int i = idx; i < a.size(); i++)
+//     {
+//         swap(a[i], a[idx]);
+//         allPosPermute(a, idx + 1);
+//         swap(a[i], a[idx]);
+//     }
+//     return;
+// }
+
+vector<int> nextPermute(vector<int> &nums)
 {
-    if (idx == a.size())
+    int idx = -1;
+    int n = nums.size();
+    for (int i = n - 2; i >= 0; i--)
     {
-        ans.push_back(a);
-        return;
+        if (nums[i] < nums[i + 1])
+        {
+            idx = i;
+            break;
+        }
     }
-    for (int i = idx; i < a.size(); i++)
+    // if (idx == -1)
+    // {
+    //     reverse(nums.begin(), nums.end());
+    //     return nums;
+    // }
+    for (int i = n - 1; i > idx && idx != -1; i--)
     {
-        swap(a[i], a[idx]);
-        permute(a, idx + 1);
-        swap(a[i], a[idx]);
+        if (nums[i] > nums[idx])
+        {
+            swap(nums[i], nums[idx]);
+            break;
+        }
     }
-    return;
+    reverse(nums.begin() + idx + 1, nums.end());
+    return nums;
 }
+
+void nextPermuteSTL(vector<int> &nums)
+{
+    next_permutation(nums.begin(), nums.end());
+}
+
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    for (auto &i : a)
-    {
-        cin >> i;
-    }
-    permute(a, 0);
+    // int n;
+    // cin >> n;
+    // vector<int> a(n);
+    vector<int> a = {1, 2, 3};
+    // for (auto &i : a)
+    // {
+    //     cin >> i;
+    // }
+    //----------->>>>>>>>Finding Next permutation
+    ans.push_back(nextPermute(a));
+
+    //----------->>>>>>>>Finding all possible permutation
+    // allPosPermute(a, 0);
+
+      //----------->>>>>>>>Finding Next permutation using STL
+
     for (auto &i : ans)
     {
         for (auto &j : i)
