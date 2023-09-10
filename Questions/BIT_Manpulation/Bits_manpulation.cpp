@@ -13,8 +13,7 @@ void printBinary(int num)
 
 int main()
 {
-    freopen("input.txt" , "r" , stdin);
-    freopen("output.txt" , "w" , stdout);
+
     // printBinary(9);
     // int a = 9;
     // int i = 0;
