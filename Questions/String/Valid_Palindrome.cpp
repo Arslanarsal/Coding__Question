@@ -28,9 +28,11 @@ public:
 
 int main()
 {
-    Solution sol;
-    string str = "A2 man, a plan, a canal: Panama";
-    cout<<isalnum(str[1]);
+    int a  = 2147483648;
+    cout<<a;
+    // Solution sol;
+    // string str = "A2 man, a plan, a canal: Panama";
+    // cout<<isalnum(str[1]);
     // cout<<sol.isPalindrome(str);
 
     return 0;
