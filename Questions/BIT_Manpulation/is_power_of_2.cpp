@@ -3,8 +3,14 @@ using namespace std;
 
 bool isPowerOf2(int n)
 {
-    int a = n & (n - 1);
-    return n && !(a);
+    // int a = n & (n - 1);
+    // return n && !(a);
+
+    if (n <= 0)
+    {
+        return false;
+    }
+    return (n & (n - 1)) == 0;
 }
 
 int main()

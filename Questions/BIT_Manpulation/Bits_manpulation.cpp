@@ -15,9 +15,11 @@ int main()
 {
 
     // printBinary(9);
-    // int a = 9;
-    // int i = 0;
+    int a = 9;
+    int i = 1;
+
     //  --------->>>>>>>>>Check set and unset bit;
+
     // if (((a >> i) & 1))
     // {
     //     cout << "Set Bit " << endl;
@@ -36,7 +38,7 @@ int main()
     // printBinary(c);
 
     //--------->>>>>>>>>> (toggle)   Set 0 bit to 1 and 1 to 0
-    // int d = (a ^ (1 << i));
+    // int d = (a ^ (1 << i));        //XOR Operator if bits same then return 0
     // printBinary(d);
 
     //------------->>>>>>>>>>>>>Count set bit in a binary
@@ -53,15 +55,17 @@ int main()
     // cout << __builtin_popcountll((1LL<<32)-1);
 
     //------------->>>>>>>>>>>  Even and Odd Number
+    //-------Even number last bit Unset and odd number bit is Set
     // for (int i = 0; i <= 10; i++)
     // {
     //     if (i & 1)
     //     {
-    //         cout <<i<< "  Odd Number " << endl;
+
+    //         cout << i << "  Odd Number " << endl;
     //     }
     //     else
     //     {
-    //         cout <<i<< "  Even Number " << endl;
+    //         cout << i << "  Even Number " << endl;
     //     }
     // }
 
@@ -80,7 +84,7 @@ int main()
     // for (char i = 'a'; i <= 'e'; i++)
     // {
     //     printBinary(int(i));
-    // }]
+    // }
 
     // char ch1 = 'A';  //----->>>>>>Upper to lower case
     // cout << char(ch1 | (1 << 5))<<endl;
@@ -93,22 +97,20 @@ int main()
     //------------>>>>>>>>>>>>>Clear MSB and LSB
     // int f = 255;
     // printBinary(f);
-    // int i = 1;
-    // int lsbClear = (f & (~((1 << (i + 1)) - 1))); //Clear LSB Bits
+    // int j = 1;
+    // int lsbClear = (f & (~((1 << (j + 1)) - 1))); //Clear LSB Bits
     // printBinary(lsbClear);
 
-    // int MSBClear = (f & ((1 << (i + 1)) - 1));//Clear LSB Bits
+    // int MSBClear = (f & ((1 << (j + 1)) - 1));//Clear MSB Bits
     // printBinary(MSBClear);
 
+    //-------->>>>>>>>>>Left and right shift
+    // int n = 2;
 
+    // cout<<(n<<1)<<endl; // n Multiply by 2 -->(n*2) Bit shift to right
+    // cout<<(n>>1)<<endl; // n divide by 2 -->(n/2)   Bit shift to left
 
-//-------->>>>>>>>>>Left and right shift
-    // int n = 15;
-    // cout<<(n<<1)<<endl; // n Multiply by 2 -->(n*2)
     // cout<<(1<<n)<<endl; //   2^n
-    // cout<<(1>>n)<<endl;  // Not opertor (!)
-    // cout<<(n>>1)<<endl; // n divide by 2 -->(n/2)
 
-    cout<<"sdkhbvjjshbvjhvb";
     return 0;
 }
