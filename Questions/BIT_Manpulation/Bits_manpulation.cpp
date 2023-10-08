@@ -38,7 +38,7 @@ int main()
     // printBinary(c);
 
     //--------->>>>>>>>>> (toggle)   Set 0 bit to 1 and 1 to 0
-    // int d = (a ^ (1 << i));        //XOR Operator if bits same then return 0
+    // int d = (a ^ (1 << i));        //XOR Operator if bits diferent then return 1 
     // printBinary(d);
 
     //------------->>>>>>>>>>>>>Count set bit in a binary
