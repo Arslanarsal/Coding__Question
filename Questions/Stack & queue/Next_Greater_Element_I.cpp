@@ -8,7 +8,7 @@ using namespace std;
     Where 'n' is the number of elements in the array.
 */
 
-vector<int> nextGreaterElement(vector<int> &arr, int n)
+vector<int> nextGreaterElement1(vector<int> &arr, int n)
 {
     // Create a vetor to store next Greater elements
     vector<int> ans(n);
@@ -46,12 +46,45 @@ vector<int> nextGreaterElement(vector<int> &arr, int n)
     return ans;
 }
 
+vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
+{
+    unordered_map<int, int> Umap;
+    vector<int> v;
+    stack<int> st;
+
+    int n = nums2.size() - 1;
+    for (int i = n; i >= 0; i--)
+    {
+        while (!st.empty() && nums2[i] >= st.top())
+        {
+            st.pop();
+        }
+        if (st.empty())
+        {
+            Umap[nums2[i]] = -1;
+        }
+        else
+        {
+            Umap[nums2[i]] = st.top();
+        }
+        st.push(nums2[i]);
+    }
+    n = nums1.size();
+    for (int i = 0; i < n; i++)
+    {
+        v.push_back(Umap[nums1[i]]);
+    }
+    return v;
+}
+
 int main()
 {
 
+    vector<int> v = {2, 4};
+    vector<int> v1 = {1, 2, 3, 4};
+    // v = nextGreaterElement1(v, 4);
+    v = nextGreaterElement(v, v1);
 
-    vector<int> v = {7, 12, 1, 20};
-    v = nextGreaterElement(v, 4);
     for (auto &&i : v)
     {
         cout << i << " ";

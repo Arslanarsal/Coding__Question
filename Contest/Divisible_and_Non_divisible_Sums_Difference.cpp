@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 int differenceOfSums(int n, int m)
 {
     int sum1 = 0, sum2 = 0;
@@ -18,6 +19,7 @@ int differenceOfSums(int n, int m)
 }
 int main()
 {
+    
     cout << differenceOfSums(5, 1);
 
     return 0;
