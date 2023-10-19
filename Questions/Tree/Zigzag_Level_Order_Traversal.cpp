@@ -11,15 +11,50 @@ struct TreeNode
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
-vector<vector<int>> zigzagLevelOrder(TreeNode *root)
+// vector<vector<int>> zigzagLevelOrder(TreeNode *root)
+// {
+//     vector<vector<int>> ans;
+//     if (!root)
+//     {
+//         return ans;
+//     }
+//     queue<TreeNode *> q;
+//     q.push(root);
+//     bool flag = true;
+//     while (!q.empty())
+//     {
+//         int size = q.size();
+//         vector<int> temp(size);
+//         for (int i = 0; i < size; i++)
+//         {
+//             TreeNode *node = q.front();
+//             q.pop();
+//             int idx = (flag) ? i : size - 1 - i;
+//             temp[idx] = node->val;
+//             if (node->left)
+//             {
+//                 q.push(node->left);
+//             }
+//             if (node->right)
+//             {
+//                 q.push(node->right);
+//             }
+//         }
+//         ans.push_back(temp);
+//         flag = !flag;
+//     }
+//     return ans;
+// }
+vector<int> zigzagLevelOrder(TreeNode *root)
 {
-    vector<vector<int>> ans;
+    vector<int> ans;
     if (!root)
     {
         return ans;
     }
     queue<TreeNode *> q;
     q.push(root);
+    bool flag = true;
     while (!q.empty())
     {
         int size = q.size();
@@ -28,7 +63,8 @@ vector<vector<int>> zigzagLevelOrder(TreeNode *root)
         {
             TreeNode *node = q.front();
             q.pop();
-            temp[i] = node->val;
+            int idx = (flag) ? i : size - 1 - i;
+            temp[idx] = node->val;
             if (node->left)
             {
                 q.push(node->left);
@@ -38,7 +74,13 @@ vector<vector<int>> zigzagLevelOrder(TreeNode *root)
                 q.push(node->right);
             }
         }
-        ans.push_back(temp);
+        for (auto &&i : temp)
+        {
+            ans.push_back(i);
+            
+        }
+        
+        flag = !flag;
     }
     return ans;
 }
