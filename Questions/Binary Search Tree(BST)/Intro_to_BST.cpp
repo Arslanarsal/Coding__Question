@@ -84,6 +84,16 @@ struct TreeNode
   TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
+void preorder(TreeNode *root)
+{
+    if (root)
+    {
+        cout << root->val << " ";
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
 int main()
 {
   TreeNode *root = new TreeNode(4);
@@ -111,6 +121,8 @@ int main()
 
   root6->left = root5;
   root6->right = root7;
+
+  preorder(root);
 
   return 0;
 }

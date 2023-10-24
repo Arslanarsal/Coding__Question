@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "format": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "new": "cpp"
     }
 }

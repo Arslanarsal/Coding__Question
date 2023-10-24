@@ -1,5 +1,4 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 // Definition for a binary tree node.
@@ -12,16 +11,52 @@ struct TreeNode
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
-bool isValidBST(vector<int> &order)
+
+void preorder(TreeNode *root)
 {
-    for (int i = 1; i < order.size(); i++)
+    if (root)
     {
-        if (order[i - 1] >= order[i])
+        cout << root->val << " ";
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+TreeNode *insertIntoBST(TreeNode *root, int val)
+{
+    if (root == NULL)
+    {
+        return new TreeNode(val);
+    }
+    TreeNode *cur = root;
+    TreeNode *befor;
+    while (cur != NULL)
+    {
+        befor = cur;
+        if (val == cur->val)
         {
-            return false;
+            return root;
+        }
+
+        else if (val < cur->val)
+        {
+            cur = cur->left;
+        }
+        else
+        {
+            cur = cur->right;
         }
     }
-    return true;
+    TreeNode *newNode = new TreeNode(val);
+
+    if (val < befor->val)
+    {
+        befor->left = newNode;
+    }
+    else
+    {
+        befor->right = newNode;
+    }
+    return root;
 }
 int main()
 {
@@ -50,6 +85,9 @@ int main()
 
     root6->left = root5;
     root6->right = root7;
+
+    insertIntoBST(root, 0);
+    preorder(root);
 
     return 0;
 }
