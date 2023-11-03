@@ -1,40 +1,48 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-class minHeap {
+class minHeap
+{
 public:
     int capacity, heapSize;
     int *heapArray;
 
     // Constructor to initialize the heap.
-    minHeap(int cap) {
+    minHeap(int cap)
+    {
         heapSize = 0;
         capacity = cap;
         heapArray = new int[capacity];
     }
 
     // Function to get the index of the parent node.
-    int parent(int i) {
+    int parent(int i)
+    {
         return (i - 1) / 2;
     }
 
     // Function to get the index of the left child node.
-    int left(int i) {
+    int left(int i)
+    {
         return (2 * i + 1);
     }
 
     // Function to get the index of the right child node.
-    int right(int i) {
+    int right(int i)
+    {
         return (2 * i + 2);
     }
 
     // Extract the minimum element from the heap.
-    int extractMinElement() {
-        if (heapSize <= 0) {
+    int extractMinElement()
+    {
+        if (heapSize <= 0)
+        {
             // Indicate that the heap is empty.
             return -1;
         }
-        if (heapSize == 1) {
+        if (heapSize == 1)
+        {
             heapSize--;
             // Return the only element in the heap.
             return heapArray[0];
@@ -67,13 +75,15 @@ public:
     }
 
     // Insert a new element into the heap.
-    void insert(int val) {
+    void insert(int val)
+    {
         int ind = heapSize;
         heapSize++;
         heapArray[ind] = val;
 
         // Restore the heap property by swapping with parent if necessary.
-        while (ind != 0 and heapArray[ind] < heapArray[parent(ind)]) {
+        while (ind != 0 and heapArray[ind] < heapArray[parent(ind)])
+        {
             swap(heapArray[ind], heapArray[parent(ind)]);
             ind = parent(ind);
         }
@@ -92,7 +102,7 @@ public:
         }
     }
 
-    // Decrease the value of an element at a given index.
+    // Change the value of an element at a given index.
     void decreaseKeyElement(int ind, int new_val)
     {
         // Update the element's value.
@@ -127,9 +137,8 @@ public:
     }
 };
 
-
 int main()
 {
-    
+
     return 0;
 }

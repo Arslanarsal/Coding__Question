@@ -38,11 +38,11 @@ vector<int> majorityElement3(vector<int> &nums)
     {
         if (count1 == 0 && ele2 != nums[i])
         {
-            count1=1, ele1 = nums[i];
+            count1++, ele1 = nums[i];
         }
         else if (count2 == 0 && ele1 != nums[i])
         {
-            count2=1, ele2 = nums[i];
+            count2++, ele2 = nums[i];
         }
         else if (ele1 == nums[i])
         {
@@ -92,7 +92,7 @@ void display(vector<int> v)
 
 int main()
 {
-    vector<int> v = {1,3, 2, 3};
+    vector<int> v = {3, 2, 3};
     // cout << majorityElement(v);
 
     // v = majorityElement3(v);
