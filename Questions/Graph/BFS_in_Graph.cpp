@@ -2,31 +2,50 @@
 #include <iostream>
 using namespace std;
 
+/*
+    Time complexity: O(n + m).
+    Space complexity: O(n).
+
+    Where 'n' is the number of vertices in the input graph and
+   'm' is the number of edges in the input graph.
+*/
+
 vector<int> bfsTraversal(int n, vector<vector<int>> &adj)
 {
+    vector<int> res;
     queue<int> q;
-    vector<int> visited(n, 0);
-    vector<int> BSF;
-    int start = 0;
-    visited[start] = 1;
-    q.push(start);
+
+    // Start BFS from vertex 0
+    q.push(0);
+
+    // Initialize the visited array with all zeros
+    vector<int> vis(n, 0);
+
+    // Mark vertex 0 as visited (1 indicates visited, 0 indicates not visited)
+    vis[0] = 1;
 
     while (!q.empty())
     {
-        int node = q.front();
-        BSF.push_back(node);
+        // Get the front vertex from the queue
+        int topVertex = q.front();
         q.pop();
 
-        for (int i = 0; i < n; ++i)
+        // Add the current vertex to the result vector
+        res.push_back(topVertex);
+
+        // Traverse all neighbors of the current vertex
+        for (auto neighbor : adj[topVertex])
         {
-            if (adj[node][i] && !visited[i])
+            // If the neighbor is not visited, mark it as visited and enqueue it
+            if (!vis[neighbor])
             {
-                q.push(i);
-                visited[i] = 1;
+                vis[neighbor] = 1;
+                q.push(neighbor);
             }
         }
     }
-    return BSF;
+
+    return res;
 }
 int main()
 {

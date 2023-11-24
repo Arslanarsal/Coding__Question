@@ -27,7 +27,7 @@ vector<vector<int>> printAdjacency(int n, int m, vector<vector<int>> &edges)
 
     for (int i = 0; i < n; i++)
     {
-        adjacencyList[i].push_back(i);
+        // adjacencyList[i].push_back(i);
 
         for (int j = 0; j < graph[i].size(); j++)
         {
@@ -37,6 +37,9 @@ vector<vector<int>> printAdjacency(int n, int m, vector<vector<int>> &edges)
 
     return adjacencyList;
 }
+
+
+
 int main()
 {
     vector<vector<int>> edge = {{2, 1}, {2, 0}};
