@@ -1,7 +1,4 @@
-
-
 #include <bits/stdc++.h>
-
 using namespace std;
 
 void topoSort(int node, vector<pair<int, int>> adj[], int vis[], stack<int> &st)
@@ -85,8 +82,7 @@ int main()
     vector<int> ans = shortestPath(N, M, edges);
 
     for (int i = 0; i < ans.size(); i++)
-    {
-
+    {  
         cout << ans[i] << " ";
     }
 
