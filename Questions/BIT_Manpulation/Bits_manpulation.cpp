@@ -19,6 +19,8 @@ int main()
     int i = 1;
 
     //  --------->>>>>>>>>Check set and unset bit;
+    
+    // printBinary((a >> i));
 
     // if (((a >> i) & 1))
     // {
@@ -107,8 +109,8 @@ int main()
     //-------->>>>>>>>>>Left and right shift
     // int n = 2;
 
-    // cout<<(n<<1)<<endl; // n Multiply by 2 -->(n*2) Bit shift to right
-    // cout<<(n>>1)<<endl; // n divide by 2 -->(n/2)   Bit shift to left
+    // cout<<(n<<1)<<endl; // n Multiply by 2 -->(n*2) Bit shift to left
+    // cout<<(n>>1)<<endl; // n divide by 2 -->(n/2)   Bit shift to right
 
     // cout<<(1<<n)<<endl; //   2^n
 
