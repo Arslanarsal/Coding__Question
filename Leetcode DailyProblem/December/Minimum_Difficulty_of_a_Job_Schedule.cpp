@@ -42,40 +42,6 @@ public:
     }
 };
 
-class Solution {
-public:
-    int solve(int job_index, int day_index, int d, vector<int>& jobDifficulty, vector<vector<int> > & dp)
-    {
-        if(day_index == d - 1)
-        {
-            int maxDifficulty = 0;
-            for(auto i = job_index; i < jobDifficulty.size(); ++i)
-                maxDifficulty = max(jobDifficulty[i], maxDifficulty);
-            return dp[job_index][day_index] = maxDifficulty;
-        }
-        if(dp[job_index][day_index]!= -1)
-            return dp[job_index][day_index];
-        
-        int cDifficulty = 0;
-        int max_D = 400000;
-        for(auto i = job_index; i < jobDifficulty.size() - (d - day_index - 1); ++i)
-        {
-            cDifficulty = max(jobDifficulty[i], cDifficulty);
-            auto solvable = solve(i+1, day_index + 1, d, jobDifficulty, dp);
-            max_D = min(cDifficulty + dp[i+1][day_index + 1] , max_D) ;   
-        }
-        
-        return dp[job_index][day_index] = max_D;      
-    }
-    
-    int minDifficulty(vector<int>& jobDifficulty, int d) {
-        if(d > jobDifficulty.size())
-            return -1;
-        vector<vector<int> > dp(jobDifficulty.size(), vector<int>(d, -1));
-        return solve(0, 0, d, jobDifficulty, dp);        
-    }
-};
-
 int main()
 {
 

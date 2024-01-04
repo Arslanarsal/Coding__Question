@@ -82,7 +82,7 @@ int main()
     vector<int> ans = shortestPath(N, M, edges);
 
     for (int i = 0; i < ans.size(); i++)
-    {  
+    {
         cout << ans[i] << " ";
     }
 
