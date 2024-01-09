@@ -1,6 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+/*
+--> Note: Two situations, where Dijkstra’s algorithm failed:
+1. If the graph contains negative edges.
+2. If the graph has a negative cycle (In this case Dijkstra’s algorithm fails to       minimize the distance, keeps on running, and goes into an infinite loop. As a result it gives TLE error).
+*/
+// TC  -->  E log (V);   (V Node and E edges)
+
 class Solution
 {
 public:
@@ -51,6 +58,28 @@ public:
         return distTo;
     }
 };
+
+/*
+O( V * ( pop vertex from min heap + no. of edges on each vertex * push in PQ ))
+
+O( V * ( log(heapSize) + no. of edges * log(heapSize))
+
+O( V * (log(heapSize) + V-1 * log(heapSize))    { one vertex can have V-1 edges }
+
+O( V * (log(heapSize) * (V-1+1))
+
+O( V * V * log(heapSize))
+
+Now, at the worst case the heapSize will be equivalent to v² as if we consider pushing adjacent elements of a node, at the worst case each element will have V-1 nodes and they will be pushed onto the queue.
+
+O( V * V * log(v²))
+
+O ( v² * 2 log (V))
+
+O ( E * 2 log(V))  { E= v², total number of edges}
+
+O ( E * log(V))  Worst case Time Complexity of Dijkstra’s Algorithm.
+*/
 
 int main()
 {
