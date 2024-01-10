@@ -11,75 +11,116 @@ struct TreeNode
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
+// class Solution
+// {
+//     bool parent(TreeNode *root, int &start, stack<TreeNode *> &st, queue<TreeNode *> &q)
+//     {
+//         if (root && root->val == start)
+//         {
+//             q.push(root);
+//             return true;
+//         }
+
+//         if (root)
+//         {
+//             st.push(root);
+//             if (!(parent(root->left, start, st, q)) && !(parent(root->right, start, st, q)))
+//             {
+//                 st.pop();
+//                 return false;
+//             }
+//             else
+//             {
+//                 return true;
+//             }
+//         }
+//         return false;
+//     }
+
+// public:
+//     int amountOfTime(TreeNode *root, int start)
+//     {
+//         stack<TreeNode *> st;
+//         queue<TreeNode *> q;
+//         parent(root, start, st, q);
+
+//         unordered_map<int, bool> mp;
+//         mp.insert({start, true});
+//         q.push(NULL);
+//         int ans = 0;
+
+//         while (!q.empty())
+//         {
+//             TreeNode *infected = q.front();
+//             q.pop();
+//             while (infected)
+//             {
+//                 if (infected->left && mp.find(infected->left->val) == mp.end())
+//                 {
+//                     q.push(infected->left);
+//                     mp.insert({infected->left->val, true});
+//                 }
+//                 if (infected->right && mp.find(infected->right->val) == mp.end())
+//                 {
+//                     q.push(infected->right);
+//                     mp.insert({infected->right->val, true});
+//                 }
+//                 if (!st.empty() && mp.find(st.top()->val) == mp.end() && ((st.top()->left && st.top()->left == infected) || (st.top()->right && st.top()->right == infected)))
+//                 {
+//                     q.push(st.top());
+//                     mp.insert({st.top()->val, true});
+//                     st.pop();
+//                 }
+//                 infected = q.front();
+//                 q.pop();
+//             }
+//             if (!q.empty())
+//             {
+//                 ans++;
+//                 q.push(NULL);
+//             }
+//         }
+//         return ans;
+//     }
+// };
+
+// Second approch
+
 class Solution
 {
-    bool parent(TreeNode *root, int &start, stack<TreeNode *> &st, queue<TreeNode *> &q)
+    int ans = 0;
+    int traverse(int start, TreeNode *root)
     {
-        if (root && root->val == start)
+        if (root == NULL)
         {
-            q.push(root);
-            return true;
+            return 0;
         }
+        int leftdepth = traverse(start, root->left);
+        int rightdepth = traverse(start, root->right);
 
-        if (root)
+        int depth = 0;
+        if (root->val == start)
         {
-            st.push(root);
-            if (!(parent(root->left, start, st, q)) && !(parent(root->right, start, st, q)))
-            {
-                st.pop();
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            ans = max(leftdepth, rightdepth);
+            depth = -1;
         }
-        return false;
+        else if (leftdepth >= 0 && rightdepth >= 0)
+        {
+            depth = max(leftdepth, rightdepth) + 1;
+        }
+        else
+        {
+            int dist = abs(leftdepth) + abs(rightdepth);
+            ans = max(ans, dist);
+            depth = min(leftdepth, rightdepth) - 1;
+        }
+        return depth;
     }
 
 public:
     int amountOfTime(TreeNode *root, int start)
     {
-        stack<TreeNode *> st;
-        queue<TreeNode *> q;
-        parent(root, start, st, q);
-
-        unordered_map<int, bool> mp;
-        mp.insert({start, true});
-        q.push(NULL);
-        int ans = 0;
-
-        while (!q.empty())
-        {
-            TreeNode *infected = q.front();
-            q.pop();
-            while (infected)
-            {
-                if (infected->left && mp.find(infected->left->val) == mp.end())
-                {
-                    q.push(infected->left);
-                    mp.insert({infected->left->val, true});
-                }
-                if (infected->right && mp.find(infected->right->val) == mp.end())
-                {
-                    q.push(infected->right);
-                    mp.insert({infected->right->val, true});
-                }
-                if (!st.empty() && mp.find(st.top()->val) == mp.end() && ((st.top()->left && st.top()->left == infected) || (st.top()->right && st.top()->right == infected)))
-                {
-                    q.push(st.top());
-                    mp.insert({st.top()->val, true});
-                    st.pop();
-                }
-                infected = q.front();
-                q.pop();
-            }
-            if (!q.empty())
-            {
-                ans++;
-                q.push(NULL);
-            }
-        }
+        traverse(start, root);
         return ans;
     }
 };
@@ -118,7 +159,7 @@ int main()
 
     vector<int> v;
     cout << endl
-         << sol.amountOfTime(root, 4);
+         << sol.amountOfTime(root, 2);
 
     return 0;
 }
