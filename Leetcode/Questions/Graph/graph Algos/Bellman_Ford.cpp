@@ -5,10 +5,20 @@ class Solution
 {
 public:
     /*  Function to implement Bellman Ford
-     *   edges: vector of vectors which represents the graph
-     *   S: source vertex to start traversing graph with
-     *   V: number of vertices
+        edges: vector of vectors which represents the graph
+        S: source vertex to start traversing graph with
+        V: number of vertices/Nodes
      */
+    /*
+    Bellman-Ford’s algorithm :
+    1.  It works fine with negative edges
+    2.  It is able to detect if the graph contains a negative cycle.
+    3.  But this algorithm is only applicable for directed graphs. In order to apply this algorithm to an undirected graph, we just need to convert the undirected
+
+    Time complexity: O(v * E)
+    Space complexity: O(V)
+
+    */
     vector<int> bellman_ford(int V, vector<vector<int>> &edges, int S)
     {
         vector<int> dist(V, 1e8);
