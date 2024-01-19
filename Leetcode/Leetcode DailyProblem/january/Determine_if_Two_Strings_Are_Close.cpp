@@ -14,21 +14,21 @@ public:
 
         vector<int> s1(26, 0);
         vector<int> s2(26, 0);
+
+        vector<bool> s3(26, false);
+        vector<bool> s4(26, false);
         for (int i = 0; i < n; i++)
         {
             s1[word1[i] - 'a']++;
             s2[word2[i] - 'a']++;
+
+            s3[word1[i] - 'a'] = true;
+            s4[word2[i] - 'a'] = true;
         }
         sort(s1.begin(), s1.end());
         sort(s2.begin(), s2.end());
-        for (int i = 0; i < 26; i++)
-        {
-            if (s1[i] != s2[i])
-            {
-                return false;
-            }
-        }
-        return true;
+
+        return s1 == s2 && s3 == s4;
     }
 };
 

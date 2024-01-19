@@ -22,7 +22,7 @@ public:
             else if (nums[i] > mafreq)
             {
                 ans = nums[i];
-                mafreq = i;
+                mafreq = nums[i];
             }
         }
         return ans;
