@@ -6,12 +6,19 @@ class Solution
 public:
     int areaOfMaxDiagonal(vector<vector<int>> &dimensions)
     {
-        int ans = 0;
-        for (int i = 0; i < dimensions.size(); i++)
+        int n = dimensions.size();
+        int idx = 0;
+        int ans = INT_MIN;
+        for (int i = 0; i < n; i++)
         {
-            ans = max(ans, dimensions[i][0] * dimensions[i][1]);
+            int d = ((dimensions[i][0] * dimensions[i][0]) + (dimensions[i][1] * dimensions[i][1]));
+            if (d > ans || (d == ans && dimensions[i][0] * dimensions[i][1] > idx))
+            {
+                ans = d;
+                idx = dimensions[i][0] * dimensions[i][1];
+            }
         }
-        return ans;
+        return idx;
     }
 };
 
