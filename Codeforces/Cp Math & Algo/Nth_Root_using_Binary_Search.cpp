@@ -15,10 +15,10 @@ double multiplay(double mid, int n)
 
 int main()
 {
-    double num;
+    double num; // Number
     cin >> num;
     int n;
-    cin >> n;
+    cin >> n; // Number of times to multiply the number by itself
     double low = 1, high = num, mid;
     while (high - low > eps)
     {
@@ -32,7 +32,6 @@ int main()
             high = mid;
         }
     }
-    cout<<high;
-
+    cout << high;
     return 0;
 }
