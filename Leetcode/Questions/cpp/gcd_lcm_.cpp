@@ -23,7 +23,7 @@ int main()
     // cout << (b / gcd(a, b))<<endl;
 
     float a = 10;
-    for (int i = 0; i <30 ; i++)
+    for (int i = 0; i < 30; i++)
     {
         a += ((0.1) * a);
     }
