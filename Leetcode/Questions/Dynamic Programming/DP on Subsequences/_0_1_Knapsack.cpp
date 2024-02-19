@@ -3,10 +3,6 @@ using namespace std;
 
 int f(int i, int w, vector<int> &weight, vector<int> &value, int &n, vector<vector<int>> &dp)
 {
-<<<<<<< HEAD
-    if (i == n)
-        return 0;
-=======
     if (i == 0)
     {
         if (weight[0] <= w)
@@ -15,25 +11,16 @@ int f(int i, int w, vector<int> &weight, vector<int> &value, int &n, vector<vect
         }
         return 0;
     }
->>>>>>> cdc02a7335ce67492bd26774c87efb754ce5a47d
 
     if (dp[i][w] != -1)
     {
         return dp[i][w];
     }
-<<<<<<< HEAD
-    int nottake = f(i + 1, w, weight, value, n, dp);
-    int take = INT_MIN;
-    if (w >= weight[i])
-    {
-        take = f(i + 1, w - weight[i], weight, value, n, dp) + value[i];
-=======
     int nottake = f(i - 1, w, weight, value, n, dp);
     int take = INT_MIN;
     if (w >= weight[i])
     {
         take = value[i] + f(i - 1, w - weight[i], weight, value, n, dp);
->>>>>>> cdc02a7335ce67492bd26774c87efb754ce5a47d
     }
     return dp[i][w] = max(take, nottake);
 }
@@ -64,10 +51,6 @@ int f(int i, int w, vector<int> &weight, vector<int> &value, int &n, vector<vect
 
 int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight)
 {
-<<<<<<< HEAD
-    vector<vector<int>> dp(n + 1, vector<int>(maxWeight + 1, -1));
-    return f(0, maxWeight, weight, value, n, dp);
-=======
     vector<int> pre(maxWeight + 1, 0);
     for (int i = weight[0]; i <= maxWeight; i++)
     {
@@ -90,7 +73,6 @@ int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight)
         pre = cur;
     }
     return pre[maxWeight];
->>>>>>> cdc02a7335ce67492bd26774c87efb754ce5a47d
 }
 int main()
 {
