@@ -3,8 +3,18 @@ using namespace std;
 
 void printBinary(int num)
 {
+    cout << num << "   ";
 
-    for (int i = 7; i >= 0; i--)
+    if (num <= 9)
+    {
+        cout << "  ";
+    }
+    else if (num <= 99)
+    {
+        cout << " ";
+    }
+
+    for (int i = 10; i >= 0; i--)
     {
         cout << ((num >> i) & 1);
     }
@@ -13,13 +23,17 @@ void printBinary(int num)
 
 int main()
 {
+    // for (int i = 0; i <= 512; i++)
+    // {
+    //     printBinary(i);
+    // }
 
     // printBinary(9);
     int a = 9;
     int i = 1;
 
     //  --------->>>>>>>>>Check set and unset bit;
-    
+
     // printBinary((a >> i));
 
     // if (((a >> i) & 1))
@@ -40,7 +54,7 @@ int main()
     // printBinary(c);
 
     //--------->>>>>>>>>> (toggle)   Set 0 bit to 1 and 1 to 0
-    // int d = (a ^ (1 << i));        //XOR Operator if bits diferent then return 1 
+    // int d = (a ^ (1 << i));        //XOR Operator if bits diferent then return 1
     // printBinary(d);
 
     //------------->>>>>>>>>>>>>Count set bit in a binary
