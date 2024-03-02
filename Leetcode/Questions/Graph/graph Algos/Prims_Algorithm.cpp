@@ -1,43 +1,65 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int minimumSpanningTree(vector<vector<int>> &edges, int n)
+class Solution
 {
-    vector<int> vist(n + 1, 0);
-    vist[0] = 1;
-    vector<vector<pair<int, int>>> adj(n);
-    for (int i = 0; i < n; i++)
+public:
+    // Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int V, vector<vector<int>> adj[])
     {
-        adj[edges[i][0]].push_back({edges[i][1], edges[i][2]});
-    }
+        priority_queue<pair<int, int>,vector<pair<int, int>>, greater<pair<int, int>>> pq;
 
-    priority_queue<pair<int, pair<int, int>>> pq; // {dist , {node , parent}}
-    pq.push({0, {0, -1}});
-    int ans = 0;
-    while (!pq.empty())
-    {
-        auto it = pq.top();
-        pq.pop();
-        int dist = it.first;
-        int node = it.second.first;
-        int parent = it.second.second;
-        if (!vist[node])
+        vector<int> vis(V, 0);
+        // {wt, node}
+        pq.push({0, 0});
+        int sum = 0;
+        while (!pq.empty())
         {
-            ans += dist;
-            for (auto &&neighbour : adj[node])
+            auto it = pq.top();
+            pq.pop();
+            int node = it.second;
+            int wt = it.first;
+
+            if (vis[node] == 1)
+                continue;
+            // add it to the mst
+            vis[node] = 1;
+            sum += wt;
+            for (auto it : adj[node])
             {
-                if (vist[neighbour])
+                int adjNode = it[0];
+                int edW = it[1];
+                if (!vis[adjNode])
                 {
-                    /* code */
+                    pq.push({edW, adjNode});
                 }
-                
             }
         }
+        return sum;
     }
-}
+};
 
 int main()
 {
+
+    int V = 5;
+    vector<vector<int>> edges = {{0, 1, 2}, {0, 2, 1}, {1, 2, 1}, {2, 3, 2}, {3, 4, 1}, {4, 2, 2}};
+    vector<vector<int>> adj[V];
+    for (auto it : edges)
+    {
+        vector<int> tmp(2);
+        tmp[0] = it[1];
+        tmp[1] = it[2];
+        adj[it[0]].push_back(tmp);
+
+        tmp[0] = it[0];
+        tmp[1] = it[2];
+        adj[it[1]].push_back(tmp);
+    }
+
+    Solution obj;
+    int sum = obj.spanningTree(V, adj);
+    cout << "The sum of all the edge weights: " << sum << endl;
 
     return 0;
 }

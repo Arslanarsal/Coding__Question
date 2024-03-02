@@ -11,7 +11,8 @@ int gcd(int a, int b)
 }
 int main()
 {
-    // int a = 12, b = 18, c = 30;
+    cout << 12 % 18 << endl;
+    int a = 12, b = 18, c = 30;
     // cout << gcd(a, b);
     // cout << __gcd(a, b) << endl;           // Two number gcd
     // cout << __gcd(__gcd(a, b), c) << endl; //   Three number gcd
@@ -22,12 +23,12 @@ int main()
     // cout<<"-"<<endl;
     // cout << (b / gcd(a, b))<<endl;
 
-    float a = 10;
-    for (int i = 0; i < 30; i++)
-    {
-        a += ((0.1) * a);
-    }
-    cout << a;
+    // float a = 10;
+    // for (int i = 0; i < 30; i++)
+    // {
+    //     a += ((0.1) * a);
+    // }
+    // cout << a;
 
     return 0;
 }
