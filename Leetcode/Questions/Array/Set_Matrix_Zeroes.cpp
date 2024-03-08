@@ -7,7 +7,7 @@ public:
     void setZeroes(vector<vector<int>> &matrix)
     {
         int col0 = 1, row0 = 1;
-        int row = matrix.size();    
+        int row = matrix.size();
         int col = matrix[0].size();
         for (int i = 0; i < row; i++)
         {
@@ -24,7 +24,6 @@ public:
                         row0 = 0;
                     }
 
-                    
                     if (j != 0)
                     {
                         matrix[0][j] = 0;
