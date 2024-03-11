@@ -20,11 +20,11 @@ int findMin(vector<int> &nums)
         return nums[min];
     }
     return nums[max];
-}
+}   
 int main()
 {
     vector<int> v = {5, 6, 1, 3, 4};
-    cout << findMin(v);
+    // cout << findMin(v);
 
     return 0;
 }
