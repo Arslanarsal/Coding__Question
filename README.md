@@ -1,11 +1,10 @@
-**LeetCode & Codeforces Problem Solutions**
 
-This repository contains solutions to coding problems from LeetCode and Codeforces platforms. The solutions are implemented in both C++ and JavaScript.
+# LeetCode and Codeforces Solutions
 
-**Languages**
+This repository contains my solutions to various problems from LeetCode and Codeforces, implemented in C++ and JavaScript.
 
-- C++ ([https://isocpp.org/](https://isocpp.org/))
-- JavaScript ([https://www.javascript.com/](https://www.javascript.com/))
+![LeetCode Logo](https://media.licdn.com/dms/image/D5622AQG00JCuA-1hBg/feedshare-shrink_800/0/1705215686733?e=2147483647&v=beta&t=KL-0ZQjIJFEZbYVqhnPirxy0hJLV4QKaEGXjd5_Uox4)
+
 
 **Problem Sources**
 
