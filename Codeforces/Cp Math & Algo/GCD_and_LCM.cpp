@@ -13,7 +13,7 @@ int main()
 {
     cout << 12 % 18 << endl;
     int a = 12, b = 18, c = 30;
-    // cout << gcd(a, b);
+    cout << gcd(a, b);
     // cout << __gcd(a, b) << endl;           // Two number gcd
     // cout << __gcd(__gcd(a, b), c) << endl; //   Three number gcd
     // cout << (a * b) / gcd(a, b); // --->>Lcm

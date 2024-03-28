@@ -37,12 +37,12 @@ int binExpIte(int a, int b)
 int main()
 {
     // Example usage of both recursive and iterative functions
-    cout << "Result using recursive binary exponentiation: " << binExpRec(21, 3) << endl;
-    cout << "Result using iterative binary exponentiation: " << binExpIte(21, 3) << endl;
+    cout << "Result using recursive binary exponentiation: " << binExpRec(2, 3) << endl;
+    cout << "Result using iterative binary exponentiation: " << binExpIte(2, 3) << endl;
 
     // Note: pow() function from <cmath> library calculates floating-point exponentiation
     // It may not give accurate results for large integers and isn't recommended for modulo arithmetic
-    cout << "Result using pow() function (not recommended for modulo arithmetic): " << pow(21, 3);
+    cout << "Result using pow() function (not recommended for modulo arithmetic): " << pow(2, 3);
 
     return 0;
 }
