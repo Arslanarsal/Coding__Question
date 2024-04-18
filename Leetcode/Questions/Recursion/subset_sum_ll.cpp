@@ -30,6 +30,9 @@ vector<int> subsets(vector<int> &num)
     sort(ans.begin(), ans.end());
     return ans;
 }
+
+
+
 int main()
 {
     vector<int> arr = {1,2,2};
