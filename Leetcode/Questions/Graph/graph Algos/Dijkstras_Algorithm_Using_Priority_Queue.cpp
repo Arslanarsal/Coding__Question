@@ -4,7 +4,7 @@ using namespace std;
 /*
 --> Note: Two situations, where Dijkstra’s algorithm failed:
 1. If the graph contains negative edges.
-2. If the graph has a negative cycle (In this case Dijkstra’s algorithm fails to       minimize the distance, keeps on running, and goes into an infinite loop. As a result it gives TLE error).
+2. If the graph has a negative cycle (In this case Dijkstra’s algorithm fails to  minimize the distance, keeps on running, and goes into an infinite loop. As a result it gives TLE error).
 */
 // TC  -->  E log (V);   (V Node and E edges)
 
