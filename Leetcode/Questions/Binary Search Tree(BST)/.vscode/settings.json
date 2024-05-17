@@ -2,6 +2,7 @@
     "files.associations": {
         "format": "cpp",
         "utility": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "random": "cpp"
     }
 }
