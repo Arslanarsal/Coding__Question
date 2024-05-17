@@ -4,7 +4,7 @@ using namespace std;
 class Solution
 {
 public:
-    int wordLadderLength(string startWord, string targetWord,vector<string> &wordList)
+    int wordLadderLength(string startWord, string targetWord, vector<string> &wordList)
     {
         // Creating a queue ds of type {word,transitions to reach ‘word’}.
         queue<pair<string, int>> q;
