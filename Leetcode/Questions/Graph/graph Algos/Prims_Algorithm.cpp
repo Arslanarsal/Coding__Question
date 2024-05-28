@@ -20,7 +20,7 @@ public:
             int node = it.second;
             int wt = it.first;
 
-            if (vis[node] == 1)
+            if (vis[node])
                 continue;
             // add it to the mst
             vis[node] = 1;
