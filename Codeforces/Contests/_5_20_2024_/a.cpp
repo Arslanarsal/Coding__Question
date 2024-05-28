@@ -7,30 +7,34 @@ int main()
     cin >> n;
     while (n--)
     {
-        int x, y;
-        cin >> x >> y;
-        int flage = false;
-        if (y & 1)
-        {
-            flage = true;
-            y++;
-        }
-        int ans = y / 2;
 
-        int once = ans * 7;
-        if (flage)
+        int n;
+        cin >> n;
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++)
         {
-            once += 4;
+            cin >> arr[i];
         }
-        if (once < x)
+        int num = 0;
+        for (int i = 0; i < n - 1; i++)
         {
-            ans += ((x - once) / 15);
-            if ((x - once) % 15)
+            if (arr[i + 1] <= arr[i])
             {
-                ans++;
+                num++;
             }
         }
-        cout << ans << "\n";
+        if (arr[n - 1] < arr[0])
+        {
+            num++;
+        }
+        if (num > 1)
+        {
+            cout << "No\n";
+        }
+        else
+        {
+            cout << "Yes\n";
+        }
     }
     return 0;
 }
