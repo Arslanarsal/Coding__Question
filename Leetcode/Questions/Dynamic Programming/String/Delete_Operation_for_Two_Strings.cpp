@@ -8,7 +8,6 @@ class Solution
         int n = text1.size();
         int m = text2.size();
         vector<int> pre(m + 1, 0), cur(m + 1, 0);
-
         for (int i = 1; i <= n; i++)
         {
             for (int j = 1; j <= m; j++)
@@ -26,7 +25,6 @@ class Solution
         }
         return pre[m];
     }
-
 public:
     int minDistance(string word1, string word2)
     {
