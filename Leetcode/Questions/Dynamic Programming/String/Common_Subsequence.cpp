@@ -73,6 +73,9 @@ public:
 
 int main()
 {
+    Solution sol;
+    string text1 = "horse", text2 = "ros";
+    cout << sol.longestCommonSubsequence(text1, text2) << endl;
 
     return 0;
 }
