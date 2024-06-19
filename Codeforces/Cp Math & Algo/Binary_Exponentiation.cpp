@@ -21,7 +21,7 @@ int binExpRec(int a, int b)
 // Iterative function to calculate exponentiation using binary exponentiation
 int binExpIte(int a, int b)
 {
-    int ans = 1;
+    long long ans = 1;
     while (b)
     {
         if (b & 1) // If b is odd
