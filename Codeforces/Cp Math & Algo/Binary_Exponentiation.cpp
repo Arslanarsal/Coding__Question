@@ -8,28 +8,27 @@ int binExpRec(int a, int b)
 {
     if (b == 0)
     {
-        return 1; // Base case: Anything raised to power 0 is 1
+        return 1;
     }
-    int res = binExpRec(a, b / 2); // Recursively compute a^(b/2)
-    if (b & 1)                     // If b is odd
+    int res = binExpRec(a, b / 2);
+    if (b & 1)
     {
-        return a * ((res * 1LL * res) % M) % M; // Multiply a with a^(b/2) * a^(b/2) % M
+        return a * ((res * 1LL * res) % M) % M;
     }
-    return (res * 1LL * res) % M; // Otherwise just return a^(b/2) * a^(b/2) % M
+    return (res * 1LL * res) % M;
 }
 
-// Iterative function to calculate exponentiation using binary exponentiation
-int binExpIte(int a, int b)
+long long binExpIte(long long a, long long b)
 {
     long long ans = 1;
     while (b)
     {
-        if (b & 1) // If b is odd
+        if (b & 1)
         {
-            ans = (ans * 1LL * a) % M; // Multiply ans with a % M
+            ans = (ans * 1LL * a) % M;
         }
-        a = (a * 1LL * a) % M; // Square a and take modulo M
-        b >>= 1;               // Divide b by 2
+        a = (a * 1LL * a) % M;
+        b >>= 1;
     }
     return ans;
 }
@@ -46,3 +45,61 @@ int main()
 
     return 0;
 }
+
+//(a^b)%M
+
+// for a
+//  IF a is greater assume a is 1e18 then first take mode (a%b) then continue If a is 2^1028 then first get binary exponentiation for a and then got for next; It a simple case;
+
+// For M;
+// if M is greater then what do
+
+long long binMultiply(long long a, long long b)
+{
+    long long ans = 0;
+    while (b)
+    {
+        if (b & 1)
+        {
+            ans = (ans + a) % M;
+        }
+        a = (a + a) % M;
+        b >>= 1;
+    }
+    return ans;
+}
+
+long long binExpIte(long long a, long long b)
+{
+    long long ans = 1;
+    while (b)
+    {
+        if (b & 1)
+        {
+            ans = binMultiply(ans, a) % M;
+        }
+        a = binMultiply(a, a) % M;
+        b >>= 1;
+    }
+    return ans;
+}
+
+
+//For b is greater
+
+long long binExpIte(long long a, long long b, long long m)
+{
+    long long ans = 1;
+    while (b)
+    {
+        if (b & 1)
+        {
+            ans = (ans * 1LL * a) % m;
+        }
+        a = (a * 1LL * a) % m;
+        b >>= 1;
+    }
+    return ans;
+}
+// a^b^c    50^64^32
+// binExpIte(50 , binExpIte(64 , 32 , M-1)  , M);
