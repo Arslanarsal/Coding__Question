@@ -84,8 +84,7 @@ long long binExpIte(long long a, long long b)
     return ans;
 }
 
-
-//For b is greater
+// For b is greater
 
 long long binExpIte(long long a, long long b, long long m)
 {
@@ -102,4 +101,5 @@ long long binExpIte(long long a, long long b, long long m)
     return ans;
 }
 // a^b^c    50^64^32
+// If M is a prime number if m is not a prime number then use ETF
 // binExpIte(50 , binExpIte(64 , 32 , M-1)  , M);
