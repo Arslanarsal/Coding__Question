@@ -1,73 +1,47 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-void dfs(int i, vector<int> adj[], vector<int> &dfsnum, vector<int> &low, vector<int> &parent, vector<int> &node, vector<int> &visit, long long &ans, int &n)
+typedef long long ll;
+const int N = 1e5 + 4;
+int n, m, df[N], lo[N], sz[N];
+vector<int> g[N];
+bool v[N];
+ll ans;
+int cnt;
+void dfs(int x, int f)
 {
-    static int time = 0;
-    visit[i] = 1;
-    dfsnum[i] = low[i] = ++time;
-    node[i] = 1;
-
-    for (auto &&it : adj[i])
+    df[x] = lo[x] = ++cnt, sz[x] = 1, v[x] = 1;
+    for (auto y : g[x])
+        if (y != f)
+        {
+            if (!v[y])
+                dfs(y, x), sz[x] += sz[y];
+            lo[x] = min(lo[x], lo[y]);
+        }
+    if (df[x] == lo[x])
     {
-        if (!visit[it])
-        {
-            parent[it] = i;
-            dfs(it, adj, dfsnum, low, parent, node, visit, ans, n);
-
-            // Check if the subtree rooted at it has a connection back to an ancestor of i
-            low[i] = min(low[i], low[it]);
-
-            // If it is not part of the same subtree, we found a bridge
-            if (low[it] > dfsnum[i])
-            {
-                long long node1 = node[it];
-                long long node2 = n - node1;
-                long long temp = ((node1 * (node1 - 1)) / 2) + ((node2 * (node2 - 1)) / 2);
-                ans = min(ans, temp);
-            }
-
-            node[i] += node[it];
-        }
-        else if (it != parent[i])
-        {
-            // Update low value of i for parent function calls.
-            low[i] = min(low[i], dfsnum[it]);
-        }
+        cout << (ll)sz[x] * (n - sz[x]) << " " << x << " " << sz[x] << " \n";
+        ans = max(ans, (ll)sz[x] * (n - sz[x]));
     }
 }
-
 int main()
 {
-    int t, n, m, a, b;
-    cin >> t;
-    while (t--)
+    ios::sync_with_stdio(false), cin.tie(0);
+    int tc;
+    cin >> tc;
+    while (tc--)
     {
         cin >> n >> m;
-        vector<int> adj[n + 1];
-        for (int i = 0; i < m; i++)
-        {
-            cin >> a >> b;
-            adj[a].push_back(b);
-            adj[b].push_back(a);
-        }
-        vector<int> node(n + 1, 0), dfsnum(n + 1, 0), low(n + 1, 0), parent(n + 1, -1), visit(n + 1, 0);
-        long long ans = LLONG_MAX;
-
         for (int i = 1; i <= n; i++)
+            g[i].clear(), v[i] = 0;
+        while (m--)
         {
-            if (!visit[i])
-            {
-                dfs(i, adj, dfsnum, low, parent, node, visit, ans, n);
-            }
-        }
-        if (ans == LLONG_MAX)
-        {
-            ans = (n * (n - 1)) / 2;
+            int u, v;
+            cin >> u >> v;
+            g[u].emplace_back(v), g[v].emplace_back(u);
         }
 
-        cout << ans << "\n";
+        ans = 0, dfs(1, 0);
+
+        cout << (ll)n * (n - 1) / 2 - ans << '\n';
     }
-
-    return 0;
 }
