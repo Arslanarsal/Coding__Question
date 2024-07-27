@@ -3,80 +3,62 @@ using namespace std;
 
 class Solution
 {
-    int left(string &s, int &x, int &y)
-    {
-        int n = s.size();
-        int ans = 0;
-        for (int i = 0; i < n - 1; i++)
-        {
-            if (s[i] == 'a' && s[i + 1] == 'b')
-            {
-                ans += x;
-                s[i] = '1';
-                s[i + 1] = '1';
-                i++;
-            }
-        }
-
-        for (int i = n - 1; i > 0; i--)
-        {
-            if (s[i] == 'a' && s[i - 1] == 'b')
-            {
-                ans += y;
-                s[i] = '1';
-                s[i - 1] = '1';
-                i++;
-            }
-        }
-        return ans;
-    }
-
-    int right(string &s, int &x, int &y)
-    {
-        int n = s.size();
-        int ans = 0;
-        stack<char> st, st1;
-
-        for (int i = n - 1; i > 0; i--)
-        {
-            if (!st.empty() && st.top() == 'a' && s[i] == 'b')
-            {
-                ans += y;
-                st.pop();
-            }
-            else
-            {
-                st.push(s[i]);
-            }
-        }
-
-        while (!st.empty())
-        {
-            if (!st1.empty() && st1.top() == 'a' && st.top() == 'b')
-            {
-                ans += x;
-                st1.pop();
-            }
-            else
-            {
-                st1.push(st.top());
-                st.pop();
-            }
-        }
-        return ans;
-    }
-
 public:
     int maximumGain(string s, int x, int y)
     {
-        // if (x > y)
-        // {
-        //     return left(s, x, y);
-        // }
-        return right(s, x, y);
+        int res = 0;
+        string top, bot;
+        int top_score, bot_score;
+
+        if (y > x)
+        {
+            top = "ba";
+            top_score = y;
+            bot = "ab";
+            bot_score = x;
+        }
+        else
+        {
+            top = "ab";
+            top_score = x;
+            bot = "ba";
+
+            bot_score = y;
+        }
+
+        // Removing first top substrings cause they give more points
+        vector<char> stack;
+        for (char ch : s)
+        { // Changed 'char' to 'ch'
+            if (ch == top[1] && !stack.empty() && stack.back() == top[0])
+            {
+                res += top_score;
+                stack.pop_back();
+            }
+            else
+            {
+                stack.push_back(ch);
+            }
+        }
+
+        // Removing bot substrings cause they give less or equal amount of scores
+        vector<char> new_stack;
+        for (char ch : stack)
+        { 
+            if (ch == bot[1] && !new_stack.empty() && new_stack.back() == bot[0])
+            {
+                res += bot_score;
+                new_stack.pop_back();
+            }
+            else
+            {
+                new_stack.push_back(ch);
+            }
+        }
+
+        return res;
     }
 };
-
 int main()
 {
 

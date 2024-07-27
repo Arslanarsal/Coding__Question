@@ -1,6 +1,5 @@
 {
     "files.associations": {
-        "ratio": "cpp",
         "array": "cpp",
         "atomic": "cpp",
         "*.tcc": "cpp",
@@ -38,8 +37,10 @@
         "iterator": "cpp",
         "map": "cpp",
         "memory": "cpp",
+        "memory_resource": "cpp",
         "numeric": "cpp",
         "random": "cpp",
+        "ratio": "cpp",
         "regex": "cpp",
         "set": "cpp",
         "string": "cpp",

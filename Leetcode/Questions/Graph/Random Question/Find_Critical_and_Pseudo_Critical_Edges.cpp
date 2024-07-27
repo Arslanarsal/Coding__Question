@@ -1,144 +1,139 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include <vector>
-#include <algorithm>
-
-using namespace std;
-
-class dsu
-{
-    vector<int> parent;
-    vector<int> size;
-
-public:
-    dsu(int n)
-    {
-        parent.resize(n);
-        size.resize(n);
-        for (int i = 0; i < n; i++)
-        {
-            parent[i] = i;
-            size[i] = 1;
-        }
-    }
-    int get_p(int p)
-    {
-        if (parent[p] == p)
-        {
-            return p;
-        }
-        return parent[p] = get_p(parent[p]);
-    }
-    void make_p(int u, int v)
-    {
-        int pu = get_p(u);
-        int pv = get_p(v);
-        if (pu == pv)
-        {
-            return;
-        }
-        if (size[pu] < size[pv])
-        {
-            parent[pu] = pv;
-            size[pv] += size[pu]; 
-        }
-        else
-        {
-            parent[pv] = pu;
-            size[pu] += size[pv]; 
-        }
-    }
-};
-
-// Comparator function to sort edges based on weight
-inline bool cmp(const vector<int> &a, const vector<int> &b)
-{
-    return a[2] < b[2]; 
-}
-
 class Solution
 {
 public:
-    vector<vector<int>> findCriticalAndPseudoCriticalEdges(int n, vector<vector<int>> &edges)
+    int N;
+    class UnionFind
     {
-        int m = edges.size(); // Bug: Initialize m to edges.size() instead of -edges.size()
-        for (int i = 0; i < m; i++)
-        {
-            edges[i].push_back(i);
-        }
-        sort(edges.begin(), edges.end(), cmp); 
+    public:
+        vector<int> parent;
+        vector<int> rank;
 
-        dsu ds(n);
-        int MST = 0;
-        for (auto &it : edges)
+        UnionFind(int n)
         {
-            int u = it[0], v = it[1], wt = it[2], idx = it[3];
-            int pu = ds.get_p(u);
-            int pv = ds.get_p(v);
-            if (pu == pv)
+            parent.resize(n);
+            rank.resize(n, 0);
+            for (int i = 0; i < n; i++)
             {
-                continue;
+                parent[i] = i;
             }
-            MST += wt;
-            ds.make_p(pu, pv);
         }
 
-        vector<vector<int>> ans(2);
-        for (int i = 0; i < m; i++)
+        int find(int x)
         {
-            dsu ds(n);
-            int sum = 0;
-            for (auto &it : edges)
+            if (x == parent[x])
+                return x;
+
+            return parent[x] = find(parent[x]);
+        }
+
+        bool Union(int x, int y)
+        {
+            int x_parent = find(x);
+            int y_parent = find(y);
+
+            if (x_parent == y_parent)
+                return false;
+
+            if (rank[x_parent] > rank[y_parent])
             {
-                int u = it[0], v = it[1], wt = it[2], idx = it[3];
-                if (idx == i)
-                {
-                    continue;
-                }
-                int pu = ds.get_p(u);
-                int pv = ds.get_p(v);
-                if (pu == pv)
-                {
-                    continue;
-                }
-                sum += wt;
-                ds.make_p(pu, pv);
+                parent[y_parent] = x_parent;
             }
-            if (sum > MST)
+            else if (rank[x_parent] < rank[y_parent])
             {
-                ans[0].push_back(i);
+                parent[x_parent] = y_parent;
             }
             else
             {
-                dsu ds(n);
-                sum = 0;
-                int u = edges[i][0], v = edges[i][1], wt = edges[i][2], idx = edges[i][3];
-                ds.make_p(u, v);
+                parent[x_parent] = y_parent;
+                rank[y_parent]++;
+            }
+            return true;
+        }
+    };
+
+    int Kruskal(vector<vector<int>> &vec, int skip_edge, int add_edge)
+    {
+
+        int sum = 0;
+
+        UnionFind uf(N);
+        int edgesConnected = 0;
+
+        if (add_edge != -1)
+        {
+            uf.Union(vec[add_edge][0], vec[add_edge][1]);
+            sum += vec[add_edge][2];
+            edgesConnected++;
+        }
+
+        // E
+
+        for (int i = 0; i < vec.size(); i++)
+        {
+
+            if (i == skip_edge)
+                continue;
+
+            int u = vec[i][0];
+            int v = vec[i][1];
+            int wt = vec[i][2];
+     
+            int parent_u = uf.find(u);
+            int parent_v = uf.find(v);
+
+            if (parent_u != parent_v)
+            {
+                uf.Union(u, v);
+                edgesConnected++;
                 sum += wt;
-                for (auto &it : edges)
-                {
-                    int u = it[0], v = it[1], wt = it[2], idx = it[3];
-                    if (idx == i)
-                    {
-                        continue;
-                    }
-                    int pu = ds.get_p(u);
-                    int pv = ds.get_p(v);
-                    if (pu == pv)
-                    {
-                        continue;
-                    }
-                    sum += wt;
-                    ds.make_p(pu, pv);
-                }
-                if (sum == MST)
-                {
-                    ans[1].push_back(i);
-                }
             }
         }
-        return ans;
+
+        if (edgesConnected != N - 1)
+            return INT_MAX;
+
+        return sum;
+    }
+
+    vector<vector<int>> findCriticalAndPseudoCriticalEdges(int n, vector<vector<int>> &edges)
+    {
+        N = n;
+        for (int i = 0; i < edges.size(); i++)
+        {
+            edges[i].push_back(i);
+        }
+
+        auto lambda = [&](vector<int> &vec1, vector<int> &vec2)
+        {
+            return vec1[2] < vec2[2];
+        };
+        // ElogE
+        sort(begin(edges), end(edges), lambda);
+
+        int MST_WEIGHT = Kruskal(edges, -1, -1);
+
+        vector<int> critical;
+        vector<int> pseudo_critical;
+
+        // E*E*@
+        for (int i = 0; i < edges.size(); i++)
+        {
+
+            if (Kruskal(edges, i, -1) > MST_WEIGHT)
+            { // skipping ith edge
+                critical.push_back(edges[i][3]);
+            }
+
+            else if (Kruskal(edges, -1, i) == MST_WEIGHT)
+            { // Force add this ith edge
+                pseudo_critical.push_back(edges[i][3]);
+            }
+        }
+
+        return {critical, pseudo_critical};
     }
 };
 

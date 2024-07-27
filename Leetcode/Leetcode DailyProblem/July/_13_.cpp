@@ -7,71 +7,62 @@ public:
     vector<int> survivedRobotsHealths(vector<int> &positions, vector<int> &healths, string directions)
     {
         int n = positions.size();
-        vector<pair<int, int>> v;
-        for (int i = 0; i < n; i++)
+        vector<int> indices(n);
+
+        iota(indices.begin(), indices.end(), 0); // This will fill the array as -> 0, 1, 2, 3, 4, n-1
+        stack<int> st;
+
+        auto lambda = [&](int i, int j)
         {
-            v.push_back({positions[i], i});
-        }
-        sort(v.begin(), v.end());
-        bool flage = true;
-        stack<pair<int, int>> st;
-        for (int i = 0; i < n; i++)
+            return positions[i] < positions[j];
+        };
+
+        sort(begin(indices), end(indices), lambda);
+
+        vector<int> result;
+        for (int currentIndex : indices)
         {
-            if (st.empty() || directions[v[i].second] == directions[st.top().second])
+            if (directions[currentIndex] == 'R')
             {
-                st.push({v[i].first, v[i].second});
+                st.push(currentIndex);
             }
             else
             {
-                while (!st.empty() && healths[st.top().second] < healths[v[i].second])
+                while (!st.empty() && healths[currentIndex] > 0)
                 {
+                    int topIndex = st.top();
                     st.pop();
+
+                    if (healths[topIndex] > healths[currentIndex])
+                    {
+                        healths[topIndex] -= 1;
+                        healths[currentIndex] = 0;
+                        st.push(topIndex);
+                    }
+                    else if (healths[topIndex] < healths[currentIndex])
+                    {
+                        healths[currentIndex] -= 1;
+                        healths[topIndex] = 0;
+                    }
+                    else
+                    {
+                        healths[currentIndex] = 0;
+                        healths[topIndex] = 0;
+                    }
                 }
-                if (st.empty())
-                {
-                    healths[v[i].second]--;
-                    st.push({v[i].first, v[i].second});
-                }
-                else if (healths[st.top().second] == healths[v[i].second])
-                {
-                    st.pop();
-                }
-                else
-                {
-                    healths[st.top().second]--;
-                }
-            }
-        }
-        if (st.empty())
-        {
-            return {};
-        }
-        int m = st.size();
-        vector<int> ans(m);
-        int i = 0;
-        if (directions[st.top().second] == 'R')
-        {
-            while (!st.empty())
-            {
-                ans[i] = healths[st.top().second];
-                i++;
-                st.pop();
-            }
-        }
-        else
-        {
-            while (!st.empty())
-            {
-                ans[m - i - 1] = healths[st.top().second];
-                i++;
-                st.pop();
             }
         }
 
-        return ans;
+        for (int i = 0; i < n; ++i)
+        {
+            if (healths[i] > 0)
+            {
+                result.push_back(healths[i]);
+            }
+        }
+        return result;
     }
 };
-
 int main()
 {
 
