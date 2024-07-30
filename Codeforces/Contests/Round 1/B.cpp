@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef vector<int> vi;
-
 int main()
 {
     int t;
@@ -11,37 +9,52 @@ int main()
     {
         int n;
         cin >> n;
-        vi inp(n - 1);
-        for (int i = 0; i < n - 1; i++)
-        {
-            cin >> inp[i];
-        }
-        vi a(n);
-        a[0] = inp[0];
-        a[n - 1] = inp[n - 2];
-        for (int i = 1; i < n - 1; i++)
-        {
-            a[i] = inp[i] | inp[i - 1];
-        }
-        bool flag = false;
-        for (int i = 0; i + 1 < n; i++)
-        {
-            if ((a[i] & a[i + 1]) != inp[i])
-            {
-                flag = true;
-                break;
-            }
-        }
-        if (flag)
-        {
-            cout << -1 << "\n";
-            continue;
-        }
+        string s;
+        cin >> s;
+        stack<int> st;
+        long long ans = 0;
+        int close = 0;
+
         for (int i = 0; i < n; i++)
         {
-            cout << a[i] << " ";
+            if (s[i] == ')')
+            {
+                close++;
+            }
         }
-        cout << "\n";
+        close = (n / 2) - close;
+        for (int i = 0; i < n; i++)
+        {
+            if (st.empty() || s[i] == '(')
+            {
+                st.push(i);
+            }
+            else if (s[i] == '_' && !close)
+            {
+                st.push(i);
+            }
+            else if (s[i] == '_' && close)
+            {
+                ans += (i - st.top());
+                st.pop();
+                close--;
+            }
+            else
+            {
+                ans += (i - st.top());
+                st.pop();
+            }
+        }
+        while (!st.empty())
+        {
+            int i = st.top();
+            st.pop();
+            int j = st.top();
+            st.pop();
+            ans += (i - j);
+        }
+
+        cout << ans << "\n";
     }
 
     return 0;

@@ -7,18 +7,25 @@ int main()
     cin >> t;
     while (t--)
     {
-        int n;
-        cin >> n;
-        int arr[n];
-        for (int i = 0; i < n; i++)
-            cin >> arr[i];
-
-        int ans = INT_MIN;
-        for (int i = 0; i < n; i += 2)
+        string s;
+        cin >> s;
+        int n = s.size();
+        int i = 0;
+        while (i < n - 1 && s[i] != s[i + 1])
         {
-            ans = max(ans, arr[i]);
+            i++;
         }
-        cout << ans << "\n";
+
+        if (s[i] == 'z')
+        {
+            char ch = 'a';
+            s.insert(s.begin() + i + 1, ch);
+        }
+        else
+        {
+            s.insert(s.begin() + i + 1, s[i] + 1);
+        }
+        cout << s << "\n";
     }
 
     return 0;

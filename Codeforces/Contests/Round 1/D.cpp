@@ -1,81 +1,67 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define int ll
-
-using ll = long long;
-using pii = pair<int, int>;
-
-const int N = (1 << 18) + 20, C = 18 + 2;
-int n, c, k;
-int cnt[C];
-bool bad[N];
-string s;
-
-int32_t main()
+int dfs(int i, vector<vector<int>> &adj, vector<int> &vist, vector<int> &val)
 {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
+    vist[i] = 1;
+    int ans = val[i];
+    int temp = INT_MAX;
+    for (auto &&it : adj[i])
+    {
+        if (vist[it] == 0)
+        {
+            int ret = dfs(it, adj, vist, val);
+            temp = min(temp, ret);
+        }
+    }
+    if (i == 1)
+    {
+        return ans + temp;
+    }
 
+    if (temp <= ans )
+    {
+        return temp;
+    }
+
+    if (temp != INT_MAX)
+    {
+        ans = ans + (abs(temp - ans) / 2);
+    }
+    return ans;
+}
+
+int main()
+{
     int t;
     cin >> t;
     while (t--)
     {
-        cin >> n >> c >> k;
-        cin >> s;
-
-        for (int i = 0; i < (1 << c); i++)
-            bad[i] = false;
-        for (int i = 0; i < c; i++)
-            cnt[i] = 0;
-
-        int cur_mask = 0;
-
-        for (int i = 0; i < k - 1; i++)
+        int n;
+        cin >> n;
+        vector<int> val(n + 1);
+        for (int i = 1; i <= n; i++)
         {
-            int ch = s[i] - 'A';
-            if (!cnt[ch])
-                cur_mask += (1 << ch);
-            cnt[ch]++;
+            cin >> val[i];
+        }
+        vector<int> par(n + 1);
+        for (int i = 2; i <= n; i++)
+        {
+            cin >> par[i];
+        }
+        if (n == 1)
+        {
+            cout << 0 << "\n";
+            continue;
         }
 
-        for (int i = k - 1; i < n; i++)
+        vector<vector<int>> adj(n + 1);
+        for (int i = 2; i <= n; i++)
         {
-            int ch = s[i] - 'A';
-            if (!cnt[ch])
-                cur_mask += (1 << ch);
-            cnt[ch]++;
-
-            bad[cur_mask] = true;
-
-            ch = s[i - k + 1] - 'A';
-            cnt[ch]--;
-            if (!cnt[ch])
-                cur_mask -= (1 << ch);
+            adj[par[i]].push_back(i);
         }
-
-        bad[(1 << (s[n - 1] - 'A'))] = true;
-
-        int ans = c;
-        for (int mask = 0; mask < (1 << c); mask++)
-        {
-            if (!bad[mask])
-            {
-                ans = min(ans, c - __builtin_popcount(mask));
-            }
-            else
-            {
-                for (int i = 0; i < c; i++)
-                {
-                    if (!(mask >> i & 1))
-                    {
-                        bad[mask + (1 << i)] = true;
-                    }
-                }
-            }
-        }
-
-        cout << ans << '\n';
+        vector<int> vist(n + 1, 0);
+        cout << dfs(1, adj, vist, val) << "\n";
     }
+    return 0;
 }
