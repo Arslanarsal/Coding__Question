@@ -1,92 +1,131 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class DisjointSet
+{
+    vector<int> parent, size;
+
+public:
+    DisjointSet(int n)
+    {
+        size.resize(n + 1, 1);
+        parent.resize(n + 1, 0);
+        for (int i = 0; i <= n; i++)
+        {
+            parent[i] = i;
+        }
+    }
+    int findUpar(int u)
+    {
+        if (u == parent[u])
+        {
+            return u;
+        }
+        return parent[u] = findUpar(parent[u]);
+    }
+    void dsu(int u, int v)
+    {
+        int ulpu = findUpar(u);
+        int ulpv = findUpar(v);
+        if (ulpv == ulpu)
+        {
+            return;
+        }
+        if (size[ulpu] < size[ulpv])
+        {
+            parent[ulpu] = ulpv;
+            size[ulpv] += size[ulpu];
+        }
+        else
+        {
+            parent[ulpv] = ulpu;
+            size[ulpu] += size[ulpv];
+        }
+    }
+};
 class Solution
 {
-    int dotX[4] = {-1, 0, 1, 0};
-    int dotY[4] = {0, 1, 0, -1};
-    int dotXd[4] = {1, 1, -1, -1};
-    int dotYd[4] = {-1, 1, 1, -1};
-
-    bool solve(int x, int y, vector<vector<bool>> &cir, vector<vector<bool>> &vist)
-    {
-        if (x < 0 || y < 0 || x >= cir.size() || y >= cir[0].size() || vist[x][y] || !cir[x][y])
-        {
-            return false;
-        }
-
-        if (x == cir.size() - 1 && y == cir[0].size() - 1)
-        {
-            return true;
-        }
-        vist[x][y] = true;
-
-        for (int i = 0; i < 4; i++)
-        {
-            int newx = x + dotXd[i];
-            int newy = y + dotYd[i];
-            if (newx >= 0 && newx < cir.size() && newy >= 0 && newy < cir[0].size() && cir[newx][newy] && solve(newx, newy, cir, vist))
-            {
-                return true;
-            }
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            int newx = x + dotX[i];
-            int newy = y + dotY[i];
-            if (newx >= 0 && newx < cir.size() && newy >= 0 && newy < cir[0].size() && cir[newx][newy] && solve(newx, newy, cir, vist))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
 public:
     bool canReachCorner(int X, int Y, vector<vector<int>> &circles)
     {
-        vector<vector<bool>> cir(X, vector<bool>(Y, 1));
-        for (auto &&it : circles)
+        int n = circles.size();
+        DisjointSet ds(n + 5);
+        int i = 0;
+        for (auto it : circles)
         {
-            int x = it[0] - 1;
-            int y = it[1] - 1;
-            int r = it[2];
-            if (r == 0)
+            int xi = it[0], yi = it[1], ri = it[2];
+            if (yi - ri >= Y || xi - ri >= X)
             {
                 continue;
             }
-            int top = max(0, x - (r - 1));
-            int right = min(Y, y + r + 1);
-            int bottom = min(X, x + r + 1);
-            int left = max(0, y - (r - 1));
-            for (int i = top; i < bottom; i++)
+            if (((xi > (X + Y) || yi > Y) && (xi > X || yi > X + Y)))
             {
-                for (int j = left; j < right; j++)
+                continue;
+            }
+            if (xi <= ri)
+            {
+                ds.dsu(i, n + 3);
+            }
+            if (yi <= ri)
+            {
+                ds.dsu(i, n);
+            }
+            if (X - xi <= ri)
+            {
+                ds.dsu(i, n + 1);
+            }
+            if (Y - yi <= ri)
+            {
+                ds.dsu(i, n + 2);
+            }
+            i++;
+        }
+        i = 0;
+        for (int i = 0; i < n; i++)
+        {
+            int x1 = circles[i][0];
+            int y1 = circles[i][1];
+            int r1 = circles[i][2];
+            if (y1 - r1 >= Y || x1 - r1 >= X)
+            {
+                continue;
+            }
+            if (((x1 > (X + Y) || y1 > Y) && (x1 > X || y1 > X + Y)))
+            {
+                continue;
+            }
+
+            for (int j = i + 1; j < n; j++)
+            {
+
+                int x2 = circles[j][0];
+                int y2 = circles[j][1];
+                int r2 = circles[j][2];
+                double dist = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+                if (dist <= (r1 + r2))
                 {
-                    cir[i][j] = 0;
+                    ds.dsu(i, j);
                 }
             }
         }
-        for (int i = 0; i < X; i++)
+        if (ds.findUpar(n + 3) == ds.findUpar(n + 1) || ds.findUpar(n + 3) == ds.findUpar(n))
         {
-            for (int j = 0; j < Y; j++)
-            {
-                cout << cir[i][j] << " ";
-            }
-            cout << endl;
+            return false;
         }
-        vector<vector<bool>> vist(X, vector<bool>(Y, false));
-        // cout << solve(0, 0, cir, vist);
-        return solve(0, 0, cir, vist);
+        if (ds.findUpar(n + 2) == ds.findUpar(n + 1) || ds.findUpar(n + 2) == ds.findUpar(n))
+        {
+            return false;
+        }
+        return true;
     }
 };
 
 int main()
 {
     Solution sol;
-    vector<vector<int>> circles = {{3, 1, 1}, {8, 3, 1}, {12, 2, 1}, {6, 4, 1}, {6, 4, 1}, {4, 3, 1}, {5, 4, 1}};
-    int X = 13, Y = 5;
+    // vector<vector<int>> circles = {{3, 1, 1}, {8, 3, 1}, {12, 2, 1}, {6, 4, 1}, {6, 4, 1}, {4, 3, 1}, {5, 4, 1}};
+    vector<vector<int>> circles = {{5, 5, 1}};
+    int X = 4, Y = 4;
     // sol.canReachCorner(X, Y, circles);
     cout << boolalpha << sol.canReachCorner(X, Y, circles) << endl;
     return 0;
