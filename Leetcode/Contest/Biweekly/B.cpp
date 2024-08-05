@@ -4,32 +4,44 @@ using namespace std;
 class Solution
 {
 public:
-    long long numberOfRightTriangles(vector<vector<int>> &grid)
+    int minFlips(vector<vector<int>> &grid)
     {
         int n = grid.size();
         int m = grid[0].size();
-        vector<int> row(n + 1, 0);
-        vector<int> col(m + 1, 0);
-        for (int i = 0; i < n; i++)
+        int i = 0;
+
+        int row = 0;
+        while (i < n)
         {
-            for (int j = 0; j < m; j++)
+            int j = 0;
+            while (j < (m / 2))
             {
-                row[i] += grid[i][j];
-                col[j] += grid[i][j];
-            }
-        }
-        long long res = 0;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                if (grid[i][j])
+                if (grid[i][j] != grid[i][m - j - 1])
                 {
-                    res = res + ((row[i] - 1) * (col[j] - 1));
+                    row++;
                 }
+                j++;
             }
+            i++;
         }
-        return res;
+
+        int col = 0;
+        i = 0;
+        while (i < m)
+        {
+            int j = 0;
+            while (j < (n / 2))
+            {
+                if (grid[j][i] != grid[n - j - 1][i])
+                {
+                    col++;
+                }
+                j++;
+            }
+            i++;
+        }
+        int ans = min(row, col);
+        return ans;
     }
 };
 

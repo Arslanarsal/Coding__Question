@@ -1,32 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution
-{
+class Solution {
 public:
-    vector<int> intersect(vector<int> &nums1, vector<int> &nums2)
-    {
-        unordered_map<int, int> mp1, mp2;
-        for (auto &&it : nums1)
-        {
-            mp1[it]++;
+    int minSwaps(vector<int>& nums) {
+        int k = accumulate(nums.begin(), nums.end(), 0);
+        int n = nums.size();
+        int cnt = accumulate(nums.begin(), nums.begin() + k, 0);
+        int mx = cnt;
+        for (int i = k; i < n + k; ++i) {
+            cnt += nums[i % n] - nums[(i - k + n) % n];
+            mx = max(mx, cnt);
         }
-        for (auto &&it : nums2)
-        {
-            mp2[it]++;
-        }
-        vector<int> ans;
-        for (auto &&it : mp1)
-        {
-            if (mp2.count(it.first))
-            {
-
-                int n = min(mp1[it.first], mp2[it.first]);
-                ans.insert(ans.end(), n, it.first);
-            }
-        }
-        sort(ans.begin(), ans.end());
-        return ans;
+        return k - mx;
     }
 };
 

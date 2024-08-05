@@ -3,74 +3,41 @@ using namespace std;
 
 class Solution
 {
-    bool check(vector<vector<char>> &grid, int i, int j, int m)
-    {
-        int ans = 0;
-        if (j < m - 1)
-        {
-            if (grid[i][j + 1] != grid[i][j])
-            {
-                ans++;
-            }
-            if (grid[i + 1][j] != grid[i][j])
-            {
-                ans++;
-            }
-            if (grid[i + 1][j + 1] != grid[i][j])
-            {
-                ans++;
-            }
-            if (ans < 2)
-            {
-                return true;
-            }
-        }
-        //
-
-        if (j > 0)
-        {
-            ans = 0;
-            if (grid[i][j - 1] != grid[i][j])
-            {
-                ans++;
-            }
-            if (grid[i + 1][j] != grid[i][j])
-            {
-                ans++;
-            }
-            if (grid[i + 1][j - 1] != grid[i][j])
-            {
-                ans++;
-            }
-        }
-        // cout << ans << endl;
-        return ans < 2;
-    }
-
 public:
-    bool canMakeSquare(vector<vector<char>> &grid)
+    int winningPlayerCount(int n, vector<vector<int>> &pick)
     {
-        int n = grid.size();
-        int m = grid[0].size();
-        for (int i = 0; i < n - 1; i++)
+        sort(pick.begin(), pick.end());
+        int total = 0;
+        int m = pick.size();
+
+        int i = 0;
+        while (i < m)
         {
-            for (int j = 0; j < m; j++)
+            vector<int> ans(10, 0);
+            while (i < m - 1 && pick[i][0] == pick[i + 1][0])
             {
-                if (check(grid, i, j, m))
+                ans[pick[i][1]]++;
+                i++;
+            }
+            ans[pick[i][1]]++;
+            bool flag = false;
+
+            for (int j = 0; j < 10; j++)
+            {
+                if (ans[j] > pick[i][0])
                 {
-                    cout << i << " " << j << endl;
-                    return true;
+                    flag = true;
                 }
             }
+            total += flag;
+            i++;
         }
-        return false;
+        return total;
     }
 };
 
 int main()
 {
-    vector<vector<char>> ch = {{'B', 'W', 'B'}, {'W', 'B', 'W'}, {'B', 'W', 'B'}};
-    Solution sol;
-    cout << sol.canMakeSquare(ch);
+
     return 0;
 }
