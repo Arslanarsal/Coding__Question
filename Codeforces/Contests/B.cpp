@@ -9,51 +9,42 @@ int main()
     cin >> t;
     while (t--)
     {
-        ll n;
-        cin >> n;
-        vector<ll> arr;
-        ll even = 0, maxodd = -1, maxeven = -1;
-        for (ll i = 0; i < n; i++)
+        vector<ll> arr(4);
+        for (int i = 0; i < 4; i++)
         {
-            ll x;
-            cin >> x;
-            if (x & 1)
-            {
-                maxodd = max(x, maxodd);
-            }
-            else
-            {
-                arr.push_back(x);
-                even++;
-                maxeven = max(x, maxeven);
-            }
+            cin >> arr[i];
         }
 
-        if (maxodd == -1 || even == 0)
+        int wins = 0;
+        if ((arr[0] > arr[2] && arr[1] > arr[3]) || (arr[0] > arr[3] && arr[1] > arr[2]))
         {
-            cout << 0 << "\n";
-            continue;
+            wins = 2;
         }
-        if (maxodd > maxeven)
+        else if ((arr[0] > arr[2] && arr[1] < arr[3]) || (arr[0] < arr[2] && arr[1] > arr[3]))
         {
-            cout << even << "\n";
+            wins = 0;
+        }
+        else if ((arr[0] > arr[3] && arr[1] < arr[2]) || (arr[0] < arr[3] && arr[1] > arr[2]))
+        {
+            wins = 0;
         }
         else
         {
-            sort(arr.begin(), arr.end());
-            int m = arr.size();
-            bool flag = false;
-            for (int i = 0; i < m; i++)
+
+            if (arr[0] != arr[2] && arr[1] != arr[3])
             {
-                if (maxodd < arr[i])
+                if ((arr[0] == arr[3] && arr[1] > arr[2]) || (arr[0] > arr[3] && arr[1] == arr[2]))
                 {
-                    flag = true;
-                    break;
+                    wins = 0;
                 }
-                maxodd += arr[i];
+                else if ((arr[0] == arr[2] && arr[1] > arr[3]) || (arr[0] > arr[2] && arr[1] == arr[3]))
+                {
+                    wins = 0;
+                }
             }
-            cout << even + flag << "\n";
         }
+
+        cout << wins << "\n";
     }
 
     return 0;

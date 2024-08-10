@@ -9,23 +9,13 @@ int main()
     {
         int n;
         cin >> n;
-        string s;
-        cin >> s;
-        vector<int> arr(4, 0);
-        int m = s.size();
-        for (int i = 0; i < m; i++)
+        int sum = 0;
+        while (n)
         {
-            if (s[i] != '?')
-            {
-                arr[s[i] - 'A']++;
-            }
+            sum += (n % 10);
+            n /= 10;
         }
-        long long ans = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            ans += min(n, arr[i]);
-        }
-        cout << ans<< "\n";
+        cout << sum << "\n";
     }
 
     return 0;

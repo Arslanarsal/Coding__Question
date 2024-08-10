@@ -3,25 +3,32 @@ using namespace std;
 
 class Solution
 {
-    int solve(int n, int &k)
-    {
-        if (n == 1)
-        {
-            return 0;
-        }
-        return (solve(n - 1, k) + k) % n;
-    }
-
 public:
-    int findTheWinner(int n, int k)
+    vector<vector<int>> spiralMatrixIII(int rows, int cols, int rStart, int cStart)
     {
-        // return solve(n, k) + 1;
-        int pre = 0;
+        vector<vector<int>> dirt{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
-        for (int i = 2; i <= n; i++)
-            pre = (pre + k) % i;
-
-        return pre + 1;
+        vector<vector<int>> ans;
+        int step = 0, d = 0;
+        ans.push_back({rStart, cStart});
+        while (ans.size() < (rows * cols))
+        {
+            if (d == 0 || d == 2)
+            {
+                step++;
+            }
+            for (int i = 0; i < step; i++)
+            {
+                rStart += dirt[d][0];
+                cStart += dirt[d][1];
+                if (rStart >= 0 && rStart < rows && cStart >= 0 && cStart < cols)
+                {
+                    ans.push_back({rStart, cStart});
+                }
+            }
+            d = (d + 1) % 4;
+        }
+        return ans;
     }
 };
 
