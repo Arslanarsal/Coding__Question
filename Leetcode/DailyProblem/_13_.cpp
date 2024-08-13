@@ -3,66 +3,43 @@ using namespace std;
 
 class Solution
 {
-public:
-    vector<int> survivedRobotsHealths(vector<int> &positions, vector<int> &healths, string directions)
+    set<vector<int>> ans;
+    void solve(int i, vector<int> &candidates, int target, vector<int> &temp, int tempsum)
     {
-        int n = positions.size();
-        vector<int> indices(n);
-
-        iota(indices.begin(), indices.end(), 0); // This will fill the array as -> 0, 1, 2, 3, 4, n-1
-        stack<int> st;
-
-        auto lambda = [&](int i, int j)
+        if (i == candidates.size())
         {
-            return positions[i] < positions[j];
-        };
-
-        sort(begin(indices), end(indices), lambda);
-
-        vector<int> result;
-        for (int currentIndex : indices)
-        {
-            if (directions[currentIndex] == 'R')
+            if (tempsum == target)
             {
-                st.push(currentIndex);
+                vector<int> s = temp;
+                sort(s.begin(), s.end());
+                ans.insert(s);
             }
-            else
-            {
-                while (!st.empty() && healths[currentIndex] > 0)
-                {
-                    int topIndex = st.top();
-                    st.pop();
-
-                    if (healths[topIndex] > healths[currentIndex])
-                    {
-                        healths[topIndex] -= 1;
-                        healths[currentIndex] = 0;
-                        st.push(topIndex);
-                    }
-                    else if (healths[topIndex] < healths[currentIndex])
-                    {
-                        healths[currentIndex] -= 1;
-                        healths[topIndex] = 0;
-                    }
-                    else
-                    {
-                        healths[currentIndex] = 0;
-                        healths[topIndex] = 0;
-                    }
-                }
-            }
+            return;
         }
 
-        for (int i = 0; i < n; ++i)
+        solve(i + 1, candidates, target, temp, tempsum);
+        if (tempsum + candidates[i] <= target)
         {
-            if (healths[i] > 0)
-            {
-                result.push_back(healths[i]);
-            }
+            temp.push_back(candidates[i]);
+            solve(i + 1, candidates, target, temp, tempsum + candidates[i]);
+            temp.pop_back();
         }
-        return result;
+    }
+
+public:
+    vector<vector<int>> combinationSum2(vector<int> &candidates, int target)
+    {
+        vector<int> t;
+        solve(0, candidates, target, t, 0);
+        vector<vector<int>> res;
+        for (auto &&i : ans)
+        {
+            res.push_back(i);
+        }
+        return res;
     }
 };
+
 int main()
 {
 

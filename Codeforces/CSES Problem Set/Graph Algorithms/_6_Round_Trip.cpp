@@ -14,11 +14,10 @@ void dfs(int pre, int i, vector<int> adj[])
         if (it != pre && !vist[it])
         {
             dfs(i, it, adj);
-
             if (flag)
             {
                 ans.push_back(i);
-                if (flag && i == startnode)
+                if (i == startnode)
                 {
                     flag = false;
                 }
@@ -54,17 +53,20 @@ int main()
         adj[v].push_back(u);
         adj[u].push_back(v);
     }
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i < n; i++)
     {
-        dfs(-1, i, adj);
-        if (ans.size())
+        if (!vist[i])
         {
-            break;
+            dfs(-1, i, adj);
+            if (flag1)
+            {
+                break;
+            }
         }
     }
 
     int t = ans.size();
-    if (t <= 2)
+    if (t == 0)
     {
         cout << "IMPOSSIBLE\n";
         return 0;
