@@ -7,38 +7,33 @@ int const mod = 1e9 + 7;
 
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    int arr[n];
-    for (int i = 0; i < n; ++i)
-        cin >> arr[i];
+    int n, s, m;
+    cin >> n >> s >> m;
+    bool flag = false;
+    int pre = 0;
+    int a, b;
+    for (int i = 0; i < n; i++)
+    {
 
-    sort(arr, arr + n);
-  
-    int tm = arr[n - 1];
-    int of = -1, on = k + 1;
-    for (int i = 0; i < n; ++i)
-    {
-        int d = tm - arr[i];
-        if ((d / k) % 2)
-            of = max(of, k - (d % k));
-        else
-            on = min(on, k - (d % k));
+        cin >> a >> b;
+        if (a - pre >= s)
+        {
+            flag = true;
+        }
+        pre = b;
     }
-    // cout<<on<<' '<<of<<endl;
-    if (of == -1)
+    if (m - pre >= s)
     {
-        cout << tm << endl;
-        // return;
+        flag = true;
     }
-    else if (on <= of)
+    if (flag)
     {
-        cout << -1 << endl;
-        // return;
+        cout << "YES\n";
     }
     else
-        cout << tm + of << endl;
-    // cout<<endl;
+    {
+        cout << "NO\n";
+    }
 }
 
 signed main()
