@@ -1,60 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-
 int main()
 {
     int t;
     cin >> t;
     while (t--)
     {
-        ll n;
+        int n;
         cin >> n;
-        vector<ll> arr;
-        ll even = 0, maxodd = -1, maxeven = -1;
-        for (ll i = 0; i < n; i++)
+        string s;
+        cin >> s;
+
+        int aiza_moves = 0, bisma_moves = 0;
+
+        // Count possible moves for Aiza and Bisma
+        for (int i = 1; i < n - 1; i++)
         {
-            ll x;
-            cin >> x;
-            if (x & 1)
+            if (s[i] == 'A' && s[i - 1] == 'A' && s[i + 1] == 'A')
             {
-                maxodd = max(x, maxodd);
+                aiza_moves++;
             }
-            else
+            if (s[i] == 'B' && s[i - 1] == 'B' && s[i + 1] == 'B')
             {
-                arr.push_back(x);
-                even++;
-                maxeven = max(x, maxeven);
+                bisma_moves++;
             }
         }
 
-        if (maxodd == -1 || even == 0)
+        if (aiza_moves > bisma_moves)
         {
-            cout << 0 << "\n";
-            continue;
-        }
-        if (maxodd > maxeven)
-        {
-            cout << even << "\n";
+            cout << "aiza\n";
         }
         else
         {
-            sort(arr.begin(), arr.end());
-            int m = arr.size();
-            bool flag = false;
-            for (int i = 0; i < m; i++)
-            {
-                if (maxodd < arr[i])
-                {
-                    flag = true;
-                    break;
-                }
-                maxodd += arr[i];
-            }
-            cout << even + flag << "\n";
+            cout << "bisma\n";
         }
     }
-
     return 0;
 }

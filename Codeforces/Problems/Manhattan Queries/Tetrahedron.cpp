@@ -1,33 +1,51 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <map>
 using namespace std;
 
-int mod = 1e9 + 7;
-int solve(bool flag, int n, vector<vector<int>> &dp)
+void dfs1(int u, int par, map<int, vector<int>> &mpp, vector<int> &in)
 {
-    if (dp[flag][n] != -1)
+    for (int v : mpp[u])
     {
-        return dp[flag][n];
-    }
-
-    if (flag)
-    {
-        if (n == 0)
+        if (v != par)
         {
-            return 1;
-        }
-        else
-        {
-            return dp[flag][n] = ((3 * 1LL * solve(!flag, n - 1, dp)) % mod);
+            dfs1(v, u, mpp, in);
+            in[u] = max(in[u], 1 + in[v]);
         }
     }
+}
 
-    if (n == 0)
+void dfs2(int u, int par, map<int, vector<int>> &mpp, vector<int> &out, vector<int> &in)
+{
+    int maxi1 = -1;
+    int maxi2 = -1;
+
+    for (int v : mpp[u])
     {
-        return 0;
+        if (v != par)
+        {
+            if (maxi1 <= in[v])
+            {
+                maxi2 = maxi1;
+                maxi1 = in[v];
+            }
+            else if (maxi2 < in[v])
+            {
+                maxi2 = in[v];
+            }
+        }
     }
-    else
+
+    for (int v : mpp[u])
     {
-        return dp[flag][n] = ((2 * 1LL * solve(flag, n - 1, dp)) + 0LL + solve(!flag, n - 1, dp)) % mod;
+        if (par != v)
+        {
+            int l = maxi1;
+            if (l == in[v])
+                l = maxi2;
+            out[v] = 1 + max(out[u], 1 + l);
+            dfs2(v, u, mpp, out, in);
+        }
     }
 }
 
@@ -35,21 +53,23 @@ int main()
 {
     int n;
     cin >> n;
-    // vector<vector<int>> dp(2, vector<int>(n + 1, -1));
-    // cout << solve(true, n, dp);
-    vector<vector<int>> dp(2, vector<int>(n + 1, 0));
-
-    dp[1][0] = 1;
-
-    for (int j = 1; j <= n; j++)
+    map<int, vector<int>> mpp;
+    for (int i = 1; i < n; i++)
     {
-
-        dp[1][j] = ((3 * 1LL * dp[0][j - 1])) % mod;
-
-        dp[0][j] = ((2 * 1LL * dp[0][j - 1]) + 0LL + dp[1][j - 1]) % mod;
+        int a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        mpp[a].push_back(b);
+        mpp[b].push_back(a);
     }
 
-    cout << dp[1][n];
+    vector<int> in(n, 0);
+    dfs1(0, -1, mpp, in);
 
-    return 0;
+    vector<int> out(n, 0);
+    dfs2(0, -1, mpp, out, in);
+
+    for (int i = 0; i < n; i++)
+        cout << max(in[i], out[i]) << " ";
 }

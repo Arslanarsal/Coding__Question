@@ -3,25 +3,13 @@ using namespace std;
 
 class Solution
 {
-    int solve(int n, int &k)
-    {
-        if (n == 1)
-        {
-            return 0;
-        }
-        return (solve(n - 1, k) + k) % n;
-    }
-
 public:
-    int findTheWinner(int n, int k)
+    vector<vector<int>> spiralMatrixIII(int rows, int cols, int rStart, int cStart)
     {
-        // return solve(n, k) + 1;
-        int pre = 0;
-
-        for (int i = 2; i <= n; i++)
-            pre = (pre + k) % i;
-
-        return pre + 1;
+        vector<vector<int>> ans;
+        vector<bool> rowCheck(rows , false) , colCheck(cols , false);
+        bool right = true , bottom = true , left = true , top = true;
+        
     }
 };
 
