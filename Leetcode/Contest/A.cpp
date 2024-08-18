@@ -4,28 +4,55 @@ using namespace std;
 class Solution
 {
 public:
-    bool canAliceWin(vector<int> &nums)
+    vector<int> resultsArray(vector<int> &nums, int k)
     {
-        int num1 = 0;
-        int num2 = 0;
         int n = nums.size();
-        for (int i = 0; i < n; i++)
+        if (k <= 1)
         {
-            if (nums[i] <= 9)
+            return nums;
+        }
+
+        vector<int> ans(n - k + 1, -1);
+        int i = 0;
+        int j = 0;
+
+        while (j < n)
+        {
+            int m = i + k;
+            while (j < n && j < m)
             {
-                num1 += nums[i];
+                if (j != i && nums[j - 1] + 1 != nums[j])
+                {
+                    i = j;
+                    m = i + k;
+                }
+                j++;
+            }
+
+            if (i < n - k + 1 && j == m)
+            {
+                ans[i] = nums[j - 1];
+            }
+
+            if (j < n && nums[j - 1] + 1 != nums[j])
+            {
+                i = j;
             }
             else
             {
-                num2 += nums[i];
+                i++;
             }
         }
-        return num1 == num2;
+
+        return ans;
     }
 };
 
 int main()
 {
-
+    Solution sol;
+    vector<int> v = {2, 3, 2};
+    int k = 2;
+    sol.resultsArray(v, k);
     return 0;
 }

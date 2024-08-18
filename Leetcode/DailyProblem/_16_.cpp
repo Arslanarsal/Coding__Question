@@ -1,168 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct TreeNode
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
-// class Solution
-// {
-// public:
-//     string getDirections(TreeNode *root, int startValue, int destValue)
-//     {
-//         string startPath, destPath;
-
-//         // Find paths from root to start and destination nodes
-//         findPath(root, startValue, startPath);
-//         findPath(root, destValue, destPath);
-
-//         string directions;
-//         int commonPathLength = 0;
-
-//         // Find the length of the common path
-//         while (commonPathLength < startPath.length() &&
-//                commonPathLength < destPath.length() &&
-//                startPath[commonPathLength] == destPath[commonPathLength])
-//         {
-//             commonPathLength++;
-//         }
-
-//         // Add "U" for each step to go up from start to common ancestor
-//         for (int i = 0; i < startPath.length() - commonPathLength; i++)
-//         {
-//             directions += "U";
-//         }
-
-//         // Add directions from common ancestor to destination
-//         for (int i = commonPathLength; i < destPath.length(); i++)
-//         {
-//             directions += destPath[i];
-//         }
-
-//         return directions;
-//     }
-
-// private:
-//     bool findPath(TreeNode *node, int target, string &path)
-//     {
-//         if (node == nullptr)
-//         {
-//             return false;
-//         }
-
-//         if (node->val == target)
-//         {
-//             return true;
-//         }
-
-//         // Try left subtree
-//         path += "L";
-//         if (findPath(node->left, target, path))
-//         {
-//             return true;
-//         }
-//         path.pop_back(); // Remove last character
-
-//         // Try right subtree
-//         path += "R";
-//         if (findPath(node->right, target, path))
-//         {
-//             return true;
-//         }
-//         path.pop_back(); // Remove last character
-
-//         return false;
-//     }
-// };
-
-int main()
-{
-    string s = "lll";
-    s.append(s.length(), 'u');
-    cout << s;
-
-    return 0;
-}
-
 class Solution
 {
 public:
-    string getDirections(TreeNode *root, int startValue, int destValue)
+    int maxDistance(vector<vector<int>> &arrays)
     {
-        // Find the Lowest Common Ancestor (LCA) of start and destination nodes
-        TreeNode *lowestCommonAncestor =
-            findLowestCommonAncestor(root, startValue, destValue);
+        int smallest = arrays[0][0];
+        int biggest = arrays[0].back();
+        int max_distance = 0;
 
-        string pathToStart;
-        string pathToDest;
-
-        // Find paths from LCA to start and destination nodes
-        findPath(lowestCommonAncestor, startValue, pathToStart);
-        findPath(lowestCommonAncestor, destValue, pathToDest);
-
-        string directions;
-
-        // Add "U" for each step to go up from start to LCA
-        directions.append(pathToStart.length(), 'U');
-
-        // Append the path from LCA to destination
-        directions.append(pathToDest);
-
-        return directions;
-    }
-
-private:
-    TreeNode *findLowestCommonAncestor(TreeNode *node, int value1, int value2)
-    {
-        if (node == nullptr)
-            return nullptr;
-
-        if (node->val == value1 || node->val == value2)
-            return node;
-
-        TreeNode *leftLCA =
-            findLowestCommonAncestor(node->left, value1, value2);
-        TreeNode *rightLCA =
-            findLowestCommonAncestor(node->right, value1, value2);
-
-        if (leftLCA == nullptr)
-            return rightLCA;
-        else if (rightLCA == nullptr)
-            return leftLCA;
-        else
-            return node; // Both values found, this is the LCA
-    }
-
-    bool findPath(TreeNode *node, int targetValue, string &path)
-    {
-        if (node == nullptr)
-            return false;
-
-        if (node->val == targetValue)
-            return true;
-
-        // Try left subtree
-        path.push_back('L');
-        if (findPath(node->left, targetValue, path))
+        for (int i = 1; i < arrays.size(); ++i)
         {
-            return true;
+            max_distance = max(max_distance, abs(arrays[i].back() - smallest));
+            max_distance = max(max_distance, abs(biggest - arrays[i][0]));
+            smallest = min(smallest, arrays[i][0]);
+            biggest = max(biggest, arrays[i].back());
         }
-        path.pop_back(); // Remove last character
 
-        // Try right subtree
-        path.push_back('R');
-        if (findPath(node->right, targetValue, path))
-        {
-            return true;
-        }
-        path.pop_back(); // Remove last character
-
-        return false;
+        return max_distance;
     }
 };
+
+int main()
+{
+
+    return 0;
+}

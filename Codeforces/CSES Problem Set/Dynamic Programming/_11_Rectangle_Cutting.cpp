@@ -16,12 +16,12 @@ int main()
                 continue;
             }
 
-            for (int k = 1; k <= i - 1; k++)
+            for (int k = 1; k < i; k++)
             {
                 dp[i][j] = min(dp[i][j], dp[k][j] + dp[i - k][j] + 1);
             }
 
-            for (int k = 1; k <= j - 1; k++)
+            for (int k = 1; k < j; k++)
             {
                 dp[i][j] = min(dp[i][j], dp[i][k] + dp[i][j - k] + 1);
             }

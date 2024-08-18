@@ -1,88 +1,43 @@
 #include <bits/stdc++.h>
+typedef long long ll;
 using namespace std;
-#define int long long
-const int mod = 1e9 + 7;
 
-int pows(int a, int b)
+const ll MOD = 1e9 + 7;
+
+ll expo(ll base, ll pow)
 {
-    int ans = 1;
-    while (b)
+    ll ans = 1;
+    while (pow)
     {
-        if (b & 1)
-        {
-            ans = (ans * a);
-        }
-        a = (a * a);
-        b >>= 1;
+        if (pow & 1)
+            ans = ans * base % MOD;
+        base = base * base % MOD;
+        pow >>= 1;
     }
     return ans;
 }
 
-int powe(int a, int b)
-{
-    int ans = 1;
-    while (b)
-    {
-        if (b & 1)
-        {
-            ans = (ans * a) % mod;
-        }
-        a = (a * a) % mod;
-        b >>= 1;
-    }
-    return ans;
-}
+ll p[100001], k[100001];
 
-// Function to find modular multiplicative inverse of a under modulo mod
-int modInverse(int a)
+int main()
 {
-    return powe(a, mod - 2);
-}
-
-int32_t main()
-{
-    int n, number = 1;
+    cin.tie(0)->sync_with_stdio(0);
+    int n;
     cin >> n;
-    vector<pair<int, int>> v(n);
-    int noOfDivisior = 1, sumOfDivisior = 1, productOfDivisior = 1;
-
+    for (int i = 0; i < n; i++)
+        cin >> p[i] >> k[i];
+    ll div_cnt = 1, div_sum = 1, div_prod = 1, div_cnt2 = 1;
     for (int i = 0; i < n; i++)
     {
-        int x, k;
-        cin >> x >> k;
-        v[i] = {x, k};
-        noOfDivisior = (noOfDivisior * (k + 1)) % mod;
-    }
+        div_cnt = div_cnt * (k[i] + 1) % MOD;
+        div_sum = div_sum * (expo(p[i], k[i] + 1) - 1) % MOD * expo(p[i] - 1, MOD - 2) % MOD;
 
-    for (int i = 0; i < n; i++)
-    {
-        int p = v[i].first;
-        int m = v[i].second;
-        number = (number * pows(p, m));
+        div_prod = expo(div_prod, k[i] + 1) *
+                   expo(expo(p[i], (k[i] * (k[i] + 1) / 2)), div_cnt2) % MOD;
+        div_cnt2 = div_cnt2 * (k[i] + 1) % (MOD - 1);
     }
-
-    for (int i = 0; i < n; i++)
-    {
-        int p = v[i].first;
-        int m = v[i].second;
-        int term = (powe(p, m + 1) - 1 + mod) % mod;
-        term = (term * modInverse(p - 1)) % mod;
-        sumOfDivisior = (sumOfDivisior * term) % mod;
-    }
-
-    if (noOfDivisior & 1)
-    {
-        int p = pows(number, (mod - 1) / 2);
-        productOfDivisior = powe(p, noOfDivisior);
-    }
-    else
-    {
-        productOfDivisior = powe(number, noOfDivisior / 2);
-    }
-
-    cout << noOfDivisior << "\n";
-    cout << sumOfDivisior << "\n";
-    cout << productOfDivisior << "\n";
-
+    cout << div_cnt << '\n'
+         << div_sum << '\n'
+         << div_prod;
     return 0;
 }
