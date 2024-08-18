@@ -20,7 +20,7 @@ void bellman_ford()
             int u = get<0>(it);
             int v = get<1>(it);
             int w = get<2>(it);
-            if (dist[u] < INF && dist[v] > dist[u] + w)
+            if (dist[v] > dist[u] + w)
             {
                 dist[v] = dist[u] + w;
                 relection[v] = u;

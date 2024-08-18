@@ -4,54 +4,31 @@ using namespace std;
 class Solution
 {
 public:
-    int numberOfSubstrings(string s)
+    long long maximumValueSum(vector<vector<int>> &board)
     {
-        int n = s.size();
-        vector<int> prefix(n, 0);
-        prefix[0] = s[0] == '1';
-        for (int i = 1; i < n; i++)
-        {
-            prefix[i] += prefix[i - 1] + s[i] == '1';
-        }
-        int ans = 0;
+        int n = board.size();
+        int m = board[0].size();
+        vector<vector<int>> arr(n, vector<int>(3, 0));
         for (int i = 0; i < n; i++)
         {
-            for (int j = i; j < n; j++)
+            for (int j = 0; j < n; j++)
             {
-                int one = prefix[j];
-                if (i != 0)
+                nth_element(board[i].begin(), board[i].end() - 3, board[i].end());
+                sort(board[i].end() - 3, board[i].end());
+                for (int k = board[i].size() - 3; k < m; k++)
                 {
-                    one -= prefix[i - 1];
-                }
-                int zero = (j - i + 1) - one;
-
-                if ((zero * zero) > one)
-                {
-                    j += (zero * zero) - one - 1;
-                }
-
-                if ((zero * zero) <= one)
-                {
-                    ans++;
-
-                    if ((zero * zero) < one)
-                    {
-                        int diff = (sqrt(one)) - zero;
-                        int next = j + diff;
-                        if (next >= n)
-                        {
-                            ans += (n - j - 1);
-                        }
-                        else
-                        {
-                            ans += diff;
-                        }
-                        j = next;
-                    }
+                    arr[i][j] = board[i][k];
                 }
             }
         }
-        return ans;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                cout<<arr[i][j];
+            }
+        }
+        return 0;
     }
 };
 
