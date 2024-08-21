@@ -4,79 +4,33 @@ using namespace std;
 class Solution
 {
 public:
-    vector<int> topoSort(vector<vector<int>> &edges, int n)
+    int strangePrinter(string s)
     {
-        vector<vector<int>> adj(n + 1);
-        vector<int> indegree(n + 1);
-        vector<int> order;
-        for (vector<int> &edge : edges)
+        int n = s.size();
+        vector<int> v(26, 0);
+        int i = 0;
+        while (i < n)
         {
-            int u = edge[0];
-            int v = edge[1];
-            adj[u].push_back(v);
-            indegree[v]++;
-        }
-
-        queue<int> que;
-        int count = 0;
-        // Push all integers with in-degree 0 in the queue.
-        for (int i = 1; i <= n; i++)
-        {
-            if (indegree[i] == 0)
+            char ch = s[i];
+            v[ch - 'a']++;
+            while (i < n && s[i] == ch)
             {
-                que.push(i);
-                count++;
+                i++;
             }
         }
-
-        while (!que.empty())
+        int sum = 0;
+        int maxele = INT_MIN;
+        for (int i = 0; i < 26; i++)
         {
-            int u = que.front();
-            order.push_back(u);
-            que.pop();
-
-            for (int &v : adj[u])
-            {
-                indegree[v]--;
-
-                if (indegree[v] == 0)
-                {
-                    que.push(v);
-                    count++;
-                }
-            }
+            sum += v[i];
+            maxele = max(maxele, v[i]);
         }
-
-        if (count != n)
-            return {}; // cycle
-
-        return order;
-    }
-
-    vector<vector<int>> buildMatrix(int k, vector<vector<int>> &rowConditions, vector<vector<int>> &colConditions)
-    {
-        vector<int> orderRows = topoSort(rowConditions, k);
-        vector<int> orderColumns = topoSort(colConditions, k);
-
-        // We might have found cycle. That's why topo order is empty
-        if (orderRows.empty() or orderColumns.empty())
-            return {};
-
-        vector<vector<int>> matrix(k, vector<int>(k, 0));
-        for (int i = 0; i < k; i++)
-        {
-            for (int j = 0; j < k; j++)
-            {
-                if (orderRows[i] == orderColumns[j])
-                {
-                    matrix[i][j] = orderRows[i];
-                }
-            }
-        }
-        return matrix;
+        sum -= maxele;
+        sum += 1;
+        cout << sum;
+        return sum;
     }
 };
-
 
 int main()
 {

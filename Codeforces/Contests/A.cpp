@@ -1,19 +1,28 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-
-int main()
+#define int long long int
+int32_t main()
 {
-<<<<<<< HEAD
     int t;
-    cin>>t;
+    cin >> t;
     while (t--)
     {
-        
+        int n;
+        cin >> n;
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++)
+        {
+            cin >> arr[i];
+        }
+        unordered_map<int, int> mp;
+        int maxele = 0;
+        for (auto &&it : arr)
+        {
+            mp[it]++;
+            maxele = max(maxele, mp[it]);
+        }
+        cout << n - maxele << "\n";
     }
-    
 
-=======
-    
->>>>>>> 612afbf91b3e5e60d4bf1d147177866db4ca57f6
     return 0;
 }
