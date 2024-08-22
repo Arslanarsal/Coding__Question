@@ -13,19 +13,20 @@ public:
         {
             for (int j = 0; j < n; j++)
             {
-                nth_element(board[i].begin(), board[i].end() - 3, board[i].end());
-                sort(board[i].end() - 3, board[i].end());
-                for (int k = board[i].size() - 3; k < m; k++)
-                {
-                    arr[i][j] = board[i][k];
-                }
+                sort(board[i].begin(), board[i].end());
             }
         }
-        for (int i = 0; i < n; i++)
+        int ans = INT_MIN;
+        for (int i = 0; i < n - 3; i++)
         {
-            for (int j = 0; j < 3; j++)
+            for (int j = m - 3; j < m; j++)
             {
-                cout<<arr[i][j];
+                int temp = board[i][j];
+                for (int i = 0; i < count; i++)
+                {
+                    /* code */
+                }
+                
             }
         }
         return 0;
