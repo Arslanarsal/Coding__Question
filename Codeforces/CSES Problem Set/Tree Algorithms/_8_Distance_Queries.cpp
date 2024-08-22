@@ -11,12 +11,14 @@ vector<vector<int>> lifting(2e5 + 2, vector<int>(30, -1));
 vector<vector<int>> adj(2e5 + 2);
 vector<int> level(2e5 + 2, 0);
 
-void dfs(int u, int h)
+void dfs(int u, int parent, int h)
 {
+    lifting[u][0] = parent;
     level[u] = h;
-    for (auto &&it : adj[u])
+    for (auto &&v : adj[u])
     {
-        dfs(it, h + 1);
+        if (v != parent)
+            dfs(v, u, h + 1);
     }
 }
 
@@ -41,12 +43,11 @@ int solve_2(int a, int b)
     {
         if (lifting[a][i] != lifting[b][i])
         {
-
             a = lifting[a][i];
             b = lifting[b][i];
         }
     }
-    return lifting[b][0];
+    return lifting[a][0];
 }
 
 int32_t main()
@@ -59,13 +60,14 @@ int32_t main()
         int a, b;
         cin >> a >> b;
         adj[a].push_back(b);
-        lifting[b][0] = a;
+        adj[b].push_back(a);
+        // lifting[b][0] = a;
     }
-    dfs(1, 0);
+    dfs(1, -1, 0);
 
     for (int i = 1; i < 30; i++)
     {
-        for (int j = 2; j <= n; j++)
+        for (int j = 1; j <= n; j++)
         {
             int temp = lifting[j][i - 1];
             if (temp != -1)
@@ -74,6 +76,10 @@ int32_t main()
             }
         }
     }
+    // for (int i = 0; i <= n; i++)
+    // {
+    //     cout << i << "  " << lifting[i][0] << "\n";
+    // }
 
     while (q--)
     {
