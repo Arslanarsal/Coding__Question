@@ -1,61 +1,55 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef int ll;
-typedef long double ld;
-#define fastio                        \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);                    \
-    cout.tie(NULL)
-#define max3(a, b, c) max(max(a, b), c)
-#define max4(a, b, c, d) max(max(a, b), max(c, d))
-#define fr(i, n) for (ll i = 0; i < n; i++)
-ll gcd(ll a, ll b)
+
+class Solution
 {
-    return b == 0 ? a : gcd(b, a % b);
-}
-ll n, q;
-// vector<vector<ll>> dp(2e5 + 1, vector<ll>(30, -1));
-ll dp[200001][30];
-ll findpar(ll node, ll k)
-{
-    ll x = node;
-    for (ll i = 0; i < 30; i++)
+public:
+    string fractionAddition(string expression)
     {
-        if (k & (1ll << i))
+        int numerator = 0, denominator = 1;
+        int i = 0, n = expression.size();
+
+        while (i < n)
         {
-            // x = f(x, i, dp, par);
-            x = dp[x][i];
+            int sign = 1;
+            if (expression[i] == '+' || expression[i] == '-')
+            {
+                if (expression[i] == '-')
+                    sign = -1;
+                i++;
+            }
+
+            int num = 0;
+            while (i < n && isdigit(expression[i]))
+            {
+                num = num * 10 + (expression[i] - '0');
+                i++;
+            }
+            num *= sign;
+
+            i++;
+
+            int den = 0;
+            while (i < n && isdigit(expression[i]))
+            {
+                den = den * 10 + (expression[i] - '0');
+                i++;
+            }
+
+            numerator = numerator * den + num * denominator;
+            denominator *= den;
+
+            int gcdVal = __gcd(abs(numerator), denominator);
+            numerator /= gcdVal;
+            denominator /= gcdVal;
         }
+
+        return to_string(numerator) + "/" + to_string(denominator);
     }
-    return x;
-}
+};
+
 int main()
 {
-    fastio;
-    cin >> n >> q;
-    for (ll i = 1; i <= n; i++)
-    {
-        cin >> dp[i][0];
-    }
-    for (ll i = 1; i < 30; i++)
-    {
-        for (ll j = 1; j <= n; j++)
-        {
-            dp[j][i] = dp[dp[j][i - 1]][i - 1];
-        }
-    }
-    for (ll i = 1; i < n; i++)
-    {
-        for (ll j = 0; j < 3; j++)
-        {
-            cout << dp[i][j] << " ";
-        }
-        cout << "\n";
-    }
-    while (q--)
-    {
-        ll a, b;
-        cin >> a >> b;
-        // cout << findpar(a, b) << "\n";
-    }
+
+    return 0;
 }
