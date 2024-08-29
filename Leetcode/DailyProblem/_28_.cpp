@@ -3,86 +3,55 @@ using namespace std;
 
 class Solution
 {
-    int Dijstra(vector<vector<int>> &adj, int time, int change)
+    bool solve(int x, int y, vector<vector<int>> &grid1, vector<vector<int>> &grid2, int &n, int &m)
     {
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
-        int n = adj.size();
-        vector<int> dist(n, INT_MAX);
-        vector<int> dist1(n, INT_MAX);
-        q.push({0, 1});
-        dist[1] = 0;
-        int flag = 0;
+        bool ans = true;
+        queue<pair<int, int>> q;
+        q.push({x, y});
+        grid2[x][y] = false;
+        int row[4] = {-1, 0, 1, 0};
+        int col[4] = {0, 1, 0, -1};
         while (!q.empty())
         {
-            auto it = q.top();
-            int value = it.first;
-            int node = it.second;
+            int i = q.front().first;
+            int j = q.front().second;
             q.pop();
-            if (node == n - 1)
+            if (!grid1[i][j])
             {
-                flag++;
-            }
-            if (flag == 2)
-            {
-                return value;
+                ans = false;
             }
 
-            int temp = value / change;
-            int neiVlue = value;
-            if (temp & 1)
+            for (int k = 0; k < 4; k++)
             {
-                neiVlue = change * (temp + 1);
-            }
-            neiVlue += time;
-
-            for (auto &&nei : adj[node])
-            {
-                int neiNode = nei;
-                // if (neiNode == n - 1)
-                // {
-                //     if (dist[neiNode] > temp)
-                //     {
-                //         q.push({temp, neiNode});
-                //         dist1[neiNode] = dist[neiNode];
-                //         dist[neiNode] = temp;
-                //     }
-                //     else if (dist1[neiNode] > temp)
-                //     {
-                //         q.push({temp, neiNode});
-                //         dist1[neiNode] = temp;
-                //     }
-                // }
-                // else
-                // {
-                if (dist[neiNode] > neiVlue)
+                int newi = i + row[k];
+                int newj = j + col[k];
+                if (newi >= 0 && newi < n && newj >= 0 && newj < m && grid2[newi][newj])
                 {
-                    q.push({neiVlue, neiNode});
-                    dist1[neiNode] = dist[neiNode];
-                    dist[neiNode] = neiVlue;
+                    grid2[newi][newj] = false;
+                    q.push({newi, newj});
                 }
-                else if (dist1[neiNode] > neiVlue && dist[nei] != neiVlue)
-                {
-                    q.push({neiVlue, neiNode});
-                    dist1[neiNode] = neiVlue;
-                }
-                // }
             }
         }
-        return 0;
+        return ans;
     }
 
 public:
-    int secondMinimum(int n, vector<vector<int>> &edges, int time, int change)
+    int countSubIslands(vector<vector<int>> &grid1, vector<vector<int>> &grid2)
     {
-        vector<vector<int>> adj(n + 1);
-        for (auto &&it : edges)
+        int ans = 0;
+        int n = grid1.size();
+        int m = grid1[0].size();
+
+        for (int i = 0; i < n; i++)
         {
-            int u = it[0];
-            int v = it[1];
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+            for (int j = 0; j < m; j++)
+            {
+                if (grid2[i][j])
+                {
+                    ans += solve(i, j, grid1, grid2, n, m);
+                }
+            }
         }
-        int ans = Dijstra(adj, time, change);
         return ans;
     }
 };
