@@ -1,29 +1,51 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
 using namespace std;
-using namespace __gnu_pbds;
-#define fastio                        \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);                    \
-    cout.tie(NULL);
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
-#define int long long int
-#define ld long double
-const int mod = 1e9 + 7;
-int t, n, q;
+#define int long long
 string s;
 
+string manacher()
+{
+    string t = "#";
+    for (auto &&ch : s)
+    {
+        t += ch;
+        t += "#";
+    }
+    int n = t.size();
+    vector<int> b(n, 1);
+    int maxlen = 0, idx = 0;
+    int l = 0, r = 0;
+    for (int i = 1; i < n; i++)
+    {
+        if (i < r)
+        {
+            b[i] = max(0LL, min(r - i, b[l + r - i]));
+        }
+        while (i + b[i] < n && i - b[i] >= 0 && t[b[i] + i] == t[i - b[i]])
+        {
+            b[i]++;
+        }
+        b[i]--;
+        if (b[i] + i > r)
+        {
+            r = b[i] + i;
+            l = i - b[i];
+        }
+        if (b[i] > maxlen)
+        {
+            maxlen = b[i];
+            idx = i / 2;
+        }
+    }
+    string ans = s.substr(idx - (maxlen / 2), maxlen);
+    return ans;
+}
 int32_t main()
 {
-    t = 1;
-    // cin >> t;
-    while (t--)
-    {
-        // cin >> n;
-        cin >> s;
-    }
-
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    cin >> s;
+    cout << manacher() << "\n";
     return 0;
 }
