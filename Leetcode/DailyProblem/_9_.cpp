@@ -1,109 +1,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class DSU
+int phi(int n)
 {
-    vector<int> parent, size;
-
-public:
-    DSU(int n)
+    int result = n;
+    for (int i = 2; i * i <= n; i++)
     {
-        parent.resize(n);
-        size.resize(n);
-        for (int i = 0; i < n; i++)
+        if (n % i == 0)
         {
-            parent[i] = i;
-            size[i] = 1;
-        }
-    }
-    int find(int p)
-    {
-        if (parent[p] == p)
-        {
-            return p;
-        }
-        return parent[p] = find(parent[p]);
-    }
-
-    void make_p(int u, int v)
-    {
-        int pv = find(v);
-        int pu = find(u);
-        if (pv != pu)
-        {
-            if (size[pv] < size[pu])
+            while (n % i == 0)
             {
-                parent[pv] = pu;
-                size[pu] += size[pv];
+                n /= i;
             }
-            else
-            {
-                parent[pu] = pv;
-                size[pv] += size[pu];
-            }
+            result -= result / i;
         }
     }
-};
+    if (n > 1)
+    {
+        result -= result / n;
+    }
+    return result;
+}
 
-class Solution
+vector<int> phi1_n(int n)
 {
-public:
-    int regionsBySlashes(vector<string> &grid)
+    vector<int> phi(n + 1);
+    for (int i = 0; i <= n; i++)
+        phi[i] = i;
+
+    for (int i = 2; i <= n; i++)
     {
-
-        int n = grid.size();
-        DSU ds(n * n * 4);
-        for (int i = 0; i < n; i++)
+        if (phi[i] == i)
         {
-            for (int j = 0; j < n; j++)
+            for (int j = i; j <= n; j += i)
             {
-                char c = grid[i][j];
-                int index = 4 * (i * n + j);
-                if (c == '/')
-                {
-
-                    ds.make_p(index, index + 1);
-                    ds.make_p(index + 2, index + 3);
-                }
-                else if (c == '\\')
-                {
-                    int index = 4 * (i * n + j);
-                    ds.make_p(index, index + 2);
-                    ds.make_p(index + 1, index + 3);
-                }
-                else
-                {
-                    ds.make_p(index, index + 1);
-                    ds.make_p(index, index + 2);
-                    ds.make_p(index, index + 3);
-                }
-
-                if (i < n - 1)
-                {
-                    int index1 = 4 * ((i + 1) * n + j);
-                    ds.make_p(index + 3, index1);
-                }
-                if (j < n - 1)
-                {
-                    int index1 = 4 * (i * n + (j + 1));
-                    ds.make_p(index + 2, index1 + 1);
-                }
+                phi[j] -= phi[j] / i;
             }
         }
-
-        unordered_set<int> ans;
-
-        for (int i = 0; i < (n * n * 4); i++)
-        {
-            int p = ds.find(i);
-            ans.insert(p);
-        }
-        return ans.size();
     }
-};
+    return phi;
+}
 
 int main()
 {
+    // Solution sol;
+    // vector<int> v = {6, 4, 3, 2, 7, 6, 2};
 
     return 0;
 }

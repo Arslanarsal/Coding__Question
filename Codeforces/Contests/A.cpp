@@ -1,28 +1,24 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
-
-#define fastio                        \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);                    \
-    cout.tie(NULL);
-
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
-#define int long long int
-#define ld long double
-const int mod = 1e9 + 7;
-int t, n, q;
+#define int long long
+// Function to find the maximum k such that the sum of first k natural numbers is <= n
+int maxK(int n)
+{
+    // Use the quadratic formula to find the maximum k
+    return (-1 + sqrt(1 + 8.0 * n)) / 2;
+}
 
 int32_t main()
 {
-    t = 1;
-    // cin >> t;
+    int t;
+    cin >> t;
     while (t--)
     {
-        cin >> n;
+        int a, b;
+        cin >> a >> b;
+        int n = b - a;
+        cout << maxK(n) + 1 << "\n";
     }
 
-return 0;
+    return 0;
 }

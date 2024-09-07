@@ -26,8 +26,7 @@ int xor1toN(int N)
         return 1;
     if (N % 4 == 2)
         return N + 1;
-    if (N % 4 == 3)
-        return 0;
+    return 0;
 }
 
 // Function to compute xor of number 'L' to 'R'.
