@@ -1,23 +1,52 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct ListNode
+{
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
 class Solution
 {
 public:
-    int minOperations(vector<string> &logs)
+    vector<ListNode *> splitListToParts(ListNode *head, int k)
     {
-        int ans = 0;
-        int n = logs.size();
-        for (int i = 0; i < n; i++)
+        vector<ListNode *> ans(k);
+        ListNode *temp = head;
+        int num = 0;
+        while (temp)
         {
-            if (logs[i][0] != '../' && logs[i][0] != './')
+            num++;
+            temp = temp->next;
+        }
+        int block = num / k;
+        int rem = num % k;
+        int i = 0;
+        ListNode *last, first;
+        while (head)
+        {
+            int j = 0;
+            ans[i] = head;
+            i++;
+            last = head;
+            while (last && j < block)
             {
-                ans++;
+                head = last;
+                last = last->next;
+                j++;
             }
-            else if (logs[i] == "../" && ans)
+            if (last && rem)
             {
-                ans--;
+                head = last;
+                last = last->next;
+                rem--;
             }
+            head->next = NULL;
+            head = last;
         }
         return ans;
     }

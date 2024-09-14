@@ -1,45 +1,62 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int phi(int n)
+struct ListNode
 {
-    int result = n;
-    for (int i = 2; i * i <= n; i++)
-    {
-        if (n % i == 0)
-        {
-            while (n % i == 0)
-            {
-                n /= i;
-            }
-            result -= result / i;
-        }
-    }
-    if (n > 1)
-    {
-        result -= result / n;
-    }
-    return result;
-}
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
 
-vector<int> phi1_n(int n)
+class Solution
 {
-    vector<int> phi(n + 1);
-    for (int i = 0; i <= n; i++)
-        phi[i] = i;
-
-    for (int i = 2; i <= n; i++)
+public:
+    vector<vector<int>> spiralMatrix(int m, int n, ListNode *head)
     {
-        if (phi[i] == i)
+        int round = 0;
+        vector<vector<int>> ans(m, vector<int>(n, -1));
+        int i = 0, j = 0;
+        while (head)
         {
-            for (int j = i; j <= n; j += i)
+            while (head && j < n - round)
             {
-                phi[j] -= phi[j] / i;
+                ans[i][j] = head->val;
+                head = head->next;
+                j++;
             }
+            j--;
+            i++;
+            while (head && i < m - round)
+            {
+                ans[i][j] = head->val;
+                head = head->next;
+                i++;
+            }
+            i--;
+            j--;
+            while (head && j >= round)
+            {
+                ans[i][j] = head->val;
+                head = head->next;
+                j--;
+            }
+            j++;
+            i--;
+            while (head && i > round)
+            {
+                ans[i][j] = head->val;
+                head = head->next;
+                i--;
+            }
+            i++;
+            j++;
+            round++;
         }
+        return ans;
     }
-    return phi;
-}
+};
 
 int main()
 {
