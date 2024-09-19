@@ -1,73 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct TreeNode
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
 
 class Solution
 {
-public:
-    TreeNode *createBinaryTree(vector<vector<int>> &descriptions)
+    int conver(string s)
     {
-        // Maps values to TreeNode pointers
-        unordered_map<int, TreeNode *> nodeMap;
-        // Stores values which are children in the descriptions
-        unordered_set<int> children;
+        int ans = s[0] - '0';
+        ans = ((ans * 10) + (s[1] - '0')) * 60;
 
-        // Iterate through descriptions to create nodes and set up tree
-        // structure
-        for (const auto &description : descriptions)
+        int temp = s[3] - '0';
+        temp = ((temp * 10) + (s[4] - '0'));
+        return ans + temp;
+    }
+
+public:
+    int findMinDifference(vector<string> &timePoints)
+    {
+        int n = timePoints.size();
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++)
         {
-            // Extract parent value, child value, and whether it is a
-            // left child (1) or right child (0)
-            int parentValue = description[0];
-            int childValue = description[1];
-            bool isLeft = description[2];
-
-            // Create parent and child nodes if not already created
-            if (nodeMap.count(parentValue) == 0)
-            {
-                nodeMap[parentValue] = new TreeNode(parentValue);
-            }
-            if (nodeMap.count(childValue) == 0)
-            {
-                nodeMap[childValue] = new TreeNode(childValue);
-            }
-
-            // Attach child node to parent's left or right branch
-            if (isLeft)
-            {
-                nodeMap[parentValue]->left = nodeMap[childValue];
-            }
-            else
-            {
-                nodeMap[parentValue]->right = nodeMap[childValue];
-            }
-
-            // Mark child as a child in the set
-            children.insert(childValue);
+            arr[i] = conver(timePoints[i]);
         }
-
-        // Find and return the root node
-        for (auto &entry : nodeMap)
+        sort(arr.begin(), arr.end());
+        int ans = INT_MAX;
+        for (int i = 1; i < n; i++)
         {
-            auto &value = entry.first;
-            auto &node = entry.second;
-            // Root node found
-            if (children.find(value) == children.end())
-            {
-                return node;
-            }
+            ans = min(ans, arr[i] - arr[i - 1]);
         }
-
-        // Should not occur according to problem statement
-        return nullptr;
+        int temp = arr[0];
+        temp += 1440 - arr[n - 1];
+        ans = min(ans, temp);
+        return ans;
     }
 };
 
