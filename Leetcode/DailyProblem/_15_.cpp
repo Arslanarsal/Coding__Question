@@ -3,40 +3,58 @@ using namespace std;
 
 class Solution
 {
-    int conver(string s)
+    void mancher(string &s, vector<int> &b)
     {
-        int ans = s[0] - '0';
-        ans = ((ans * 10) + (s[1] - '0')) * 60;
-
-        int temp = s[3] - '0';
-        temp = ((temp * 10) + (s[4] - '0'));
-        return ans + temp;
+        string t = "#";
+        for (auto &&i : s)
+        {
+            t += i;
+            t += "#";
+        }
+        int n = s.size();
+        int l = 0, r = 0;
+        for (int i = 0; i <= n; i++)
+        {
+            if (i < r)
+            {
+                b[i] = max(0, min(r - i, b[l + r - i]));
+            }
+            while (i - b[i] >= 0 && b[i] + i < (n * 2 + 1) && t[b[i] + i] == t[i - b[i]])
+            {
+                b[i]++;
+            }
+            b[i]--;
+            if (i + b[i] > r)
+            {
+                r = i + b[i];
+                l = i - b[i];
+            }
+        }
     }
 
 public:
-    int findMinDifference(vector<string> &timePoints)
+    string shortestPalindrome(string s)
     {
-        int n = timePoints.size();
-        vector<int> arr(n);
-        for (int i = 0; i < n; i++)
+        int n = s.size();
+        vector<int> b(n + 1, 0);
+        mancher(s, b);
+        int maxlen = 1;
+        for (int i = 0; i <= n; i++)
         {
-            arr[i] = conver(timePoints[i]);
+            if ((i / 2 - b[i] / 2) == 0)
+            {
+                maxlen = b[i];
+            }
         }
-        sort(arr.begin(), arr.end());
-        int ans = INT_MAX;
-        for (int i = 1; i < n; i++)
-        {
-            ans = min(ans, arr[i] - arr[i - 1]);
-        }
-        int temp = arr[0];
-        temp += 1440 - arr[n - 1];
-        ans = min(ans, temp);
-        return ans;
+        string temp = s.substr(maxlen);
+        reverse(temp.begin(), temp.end());
+        return temp + s;
     }
 };
 
 int main()
 {
-
+    Solution sol;
+    sol.shortestPalindrome("abcd");
     return 0;
 }

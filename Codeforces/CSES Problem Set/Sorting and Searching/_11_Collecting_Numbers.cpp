@@ -1,32 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
+int solve()
+{
     int n;
     cin >> n;
-    vector<int> arr(n);
-    
-    for (int i = 0; i < n; i++) {
-        cin >> arr[i];
+    int count = 1;
+
+    vector<pair<int, int>> v(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i].first;
+        v[i].second = i + 1;
     }
 
-    int rounds = 0;
-    int expected = 1;
-
-    for (int i = 0; i < n; i++) {
-        if (arr[i] == expected) {
-            expected++;
+    sort(v.begin(), v.end());
+    int temp = v[0].second;
+    for (int i = 1; i < n; i++)
+    {
+        if (v[i].second < temp)
+        {
+            count++;
         }
-        // If the expected number doesn't increase, it means we need another round
-        if (i == n - 1 || arr[i] >= expected) {
-            rounds++;
-        }
+        temp = v[i].second;  
     }
-
-    cout << rounds << endl;
-
+    cout << count << endl;
+    return 0;
+}
+int main()
+{
+    int testCase = 1;
+    while (testCase--)
+    {
+        solve();
+    }
     return 0;
 }
