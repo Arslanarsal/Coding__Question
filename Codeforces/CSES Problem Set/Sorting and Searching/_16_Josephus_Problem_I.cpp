@@ -12,32 +12,32 @@ typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_
 #define int long long
 #define ld long double
 const int mod = 1e9 + 7;
-int t, n, m, q, x, k;
+int t, n, m, q, x;
 
 int32_t main()
 {
     fastio;
-
-    cin >> t;
+    t = 1;
+    // cin >> t;
     while (t--)
     {
-        cin >> n >> k;
-        int ans = (k + 1) / 2;
-        if (!(n & 1))
+        cin >> n;
+        oSet st;
+        for (int i = 1; i <= n; i++)
         {
-            ans--;
-            if ((k + 1) & 1)
-            {
-                ans++;
-            }
+            st.insert(i);
         }
-        if (ans & 1)
+        int idx = 0;
+        int k = 1;
+        m = st.size();
+        while (m)
         {
-            cout << "NO\n";
-        }
-        else
-        {
-            cout << "YES\n";
+            idx = idx % m;
+            idx = (idx + k) % m;
+            auto it = st.find_by_order(idx);
+            cout << *it << " ";
+            st.erase(it);
+            m = st.size();
         }
     }
 

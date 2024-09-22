@@ -1,18 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#include <vector>
+#include <string>
+#include <unordered_set>
+
 class Solution
 {
-    int phi(int n)
-    {
-        for (int i = 0; i < n; i++)
-        {
-        }
-    }
-
 public:
-    int superPow(int a, vector<int> &b)
+    bool reportSpam(std::vector<std::string> &message, std::vector<std::string> &bannedWords)
     {
+        unordered_set<string> bannedSet(bannedWords.begin(), bannedWords.end());
+        int count = 0;
+
+        for (const auto &word : message)
+        {
+            if (bannedSet.find(word) != bannedSet.end())
+            {
+                count++;
+
+                if (count >= 2)
+                    return true;
+            }
+        }
+        return false;
     }
 };
 

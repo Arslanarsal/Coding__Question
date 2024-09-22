@@ -23,12 +23,12 @@ int32_t main()
 
     cin >> n >> s;
     int m = n - s.size();
-    if (m==1)
+    if (m == 1)
     {
-       cout<<52<<"\n";
-       return 0;
+        cout << 52 << "\n";
+        return 0;
     }
-    
+
     int ans = find_pow(26, m);
     if (s.size())
     {

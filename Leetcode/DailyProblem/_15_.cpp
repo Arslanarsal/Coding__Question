@@ -1,60 +1,63 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+
 using namespace std;
+using namespace __gnu_pbds;
+#define fastio                        \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL);
+typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
+#define int long long
+#define ld long double
+const int mod = 1e9 + 7;
+int t, n, m, q, x;
+
 
 class Solution
 {
-    void mancher(string &s, vector<int> &b)
+    int N;
+    void solve(int num, vector<int> &ans)
     {
-        string t = "#";
-        for (auto &&i : s)
+        ans.push_back(num);
+        for (int i = 0; i < 10; i++)
         {
-            t += i;
-            t += "#";
-        }
-        int n = s.size();
-        int l = 0, r = 0;
-        for (int i = 0; i <= n; i++)
-        {
-            if (i < r)
+            int temp = num;
+            temp = temp * 10 + i;
+            if (temp <= N)
             {
-                b[i] = max(0, min(r - i, b[l + r - i]));
-            }
-            while (i - b[i] >= 0 && b[i] + i < (n * 2 + 1) && t[b[i] + i] == t[i - b[i]])
-            {
-                b[i]++;
-            }
-            b[i]--;
-            if (i + b[i] > r)
-            {
-                r = i + b[i];
-                l = i - b[i];
+                solve(temp, ans);
             }
         }
     }
 
 public:
-    string shortestPalindrome(string s)
+    vector<int> lexicalOrder(int n)
     {
-        int n = s.size();
-        vector<int> b(n + 1, 0);
-        mancher(s, b);
-        int maxlen = 1;
-        for (int i = 0; i <= n; i++)
+        N = n;
+        vector<int> ans;
+        for (int i = 1; i < 10; i++)
         {
-            if ((i / 2 - b[i] / 2) == 0)
+            if (i <= N)
             {
-                maxlen = b[i];
+               solve(i, ans);
             }
+            
         }
-        string temp = s.substr(maxlen);
-        reverse(temp.begin(), temp.end());
-        return temp + s;
+
+        return ans;
     }
 };
-
-int main()
+int32_t main()
 {
-    Solution sol;
-    sol.shortestPalindrome("abcd");
+    fastio;
+    t = 1;
+    // cin >> t;
+    while (t--)
+    {
+        cin >> n;
+    }
+
     return 0;
 }

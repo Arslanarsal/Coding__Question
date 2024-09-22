@@ -8,35 +8,37 @@ using namespace __gnu_pbds;
     ios_base::sync_with_stdio(false); \
     cin.tie(NULL);                    \
     cout.tie(NULL);
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet;
+
 #define int long long
 #define ld long double
 const int mod = 1e9 + 7;
 int t, n, m, q, x;
-int a, b;
+
 int32_t main()
 {
     fastio;
-    cin >> t;
+    t = 1;
+    // cin >> t;
     while (t--)
     {
-        cin >> n >> x;
-
-        int ans = 0, temp = 0;
+        cin >> x >> n;
+        set<int> st;
+        multiset<int> ans;
+        ans.insert(x);
+        st.insert(x);
+        st.insert(0);
         for (int i = 0; i < n; i++)
         {
-            cin >> a;
-            if (a == 0 && temp)
-            {
-                ans++;
-                temp--;
-            }
-            if (a >= x)
-            {
-                temp += a;
-            }
+            cin >> m;
+            st.insert(m);
+            auto it = st.find(m);
+            int left = *prev(it);
+            int right = *next(it);
+            ans.erase(ans.find(right - left));
+            ans.insert(m - left);
+            ans.insert(right - m);
+            cout << *ans.rbegin() << " ";
         }
-        cout << ans << "\n";
     }
 
     return 0;
