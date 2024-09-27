@@ -14,41 +14,32 @@ typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_
 const int mod = 1e9 + 7;
 int t, n, m, q, x;
 
-
-class Solution
+class MyCalendar
 {
-    int N;
-    void solve(int num, vector<int> &ans)
-    {
-        ans.push_back(num);
-        for (int i = 0; i < 10; i++)
-        {
-            int temp = num;
-            temp = temp * 10 + i;
-            if (temp <= N)
-            {
-                solve(temp, ans);
-            }
-        }
-    }
+    tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update> oSet;
 
 public:
-    vector<int> lexicalOrder(int n)
+    MyCalendar()
     {
-        N = n;
-        vector<int> ans;
-        for (int i = 1; i < 10; i++)
-        {
-            if (i <= N)
-            {
-               solve(i, ans);
-            }
-            
-        }
+    }
 
-        return ans;
+    bool book(int start, int end)
+    {
+        bool flag = true;
+        int idx = oSet.order_of_key({start, end});
+        if (idx && (*oSet.find_by_order(idx - 1)).second > start)
+        {
+            flag = false;
+        }
+        if (idx < oSet.size() && (*oSet.find_by_order(idx - 1)).first < end)
+        {
+            flag = false;
+        }
+        oSet.insert({start, end});
+        return flag;
     }
 };
+
 int32_t main()
 {
     fastio;
