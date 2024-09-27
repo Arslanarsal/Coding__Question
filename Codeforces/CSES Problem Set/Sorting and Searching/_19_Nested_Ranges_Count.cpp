@@ -9,10 +9,10 @@ using namespace __gnu_pbds;
     cin.tie(NULL);                    \
     cout.tie(NULL);
 
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet;
-// [find_by_order ==> given address at index] |==| [order_of_key ==> Number of elements smaller than X]
 #define int long long
 #define ld long double
+#define pii pair<int, int>
+typedef tree<pii, null_type, less<pii>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
 const int mod = 1e9 + 7;
 int t, n, q, m, x;
 
@@ -30,43 +30,30 @@ int32_t main()
     {
         cin >> n;
         vector<range> arr(n);
-        vector<bool> contain(n, 0), contained(n, 0);
-
         for (int i = 0; i < n; i++)
         {
             cin >> arr[i].left;
             cin >> arr[i].right;
             arr[i].index = i;
         }
-
-        // Sort ranges: first by left ascending, then by right descending
+        vector<int> contain(n, 0), contained(n, 0);
+        oSet st;
         sort(arr.begin(), arr.end(), [&](range a, range b)
              {
-            if (a.left == b.left) {
-                return a.right > b.right;
-            }
-            return a.left < b.left; });
+    if (a.left == b.left)
+        return a.right > b.right;  
+    return a.left < b.left; });
 
-        // Check for contained intervals
-        int maxend = 0;
         for (int i = 0; i < n; i++)
         {
-            if (arr[i].right <= maxend)
-            {
-                contained[arr[i].index] = true;
-            }
-            maxend = max(maxend, arr[i].right);
+            st.insert({arr[i].right, -1 * i});
+            contained[arr[i].index] = st.size() - st.order_of_key({arr[i].right, -1 * i}) - 1;
         }
-
-        
-        int minend = LLONG_MAX; 
+        st.clear();
         for (int i = n - 1; i >= 0; i--)
-        { 
-            if (arr[i].right >= minend)
-            {
-                contain[arr[i].index] = true;
-            }
-            minend = min(minend, arr[i].right);
+        {
+            st.insert({arr[i].right, -1 * i});
+            contain[arr[i].index] = st.order_of_key({arr[i].right, -1 * i});
         }
 
         for (int i = 0; i < n; i++)
