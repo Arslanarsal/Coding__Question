@@ -8,35 +8,20 @@ using namespace __gnu_pbds;
     ios_base::sync_with_stdio(false); \
     cin.tie(NULL);                    \
     cout.tie(NULL);
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet;
+typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
 #define int long long
 #define ld long double
 const int mod = 1e9 + 7;
 int t, n, m, q, x;
-int a, b;
+
 int32_t main()
 {
     fastio;
-    cin >> t;
+    t = 1;
+    // cin >> t;
     while (t--)
     {
-        cin >> n >> x;
-
-        int ans = 0, temp = 0;
-        for (int i = 0; i < n; i++)
-        {
-            cin >> a;
-            if (a == 0 && temp)
-            {
-                ans++;
-                temp--;
-            }
-            if (a >= x)
-            {
-                temp += a;
-            }
-        }
-        cout << ans << "\n";
+        cin >> n;
     }
 
     return 0;

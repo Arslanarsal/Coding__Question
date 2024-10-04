@@ -8,22 +8,28 @@ using namespace std;
 class Solution
 {
 public:
-    bool reportSpam(std::vector<std::string> &message, std::vector<std::string> &bannedWords)
+    long long maximumTotalSum(vector<int> &maximumHeight)
     {
-        unordered_set<string> bannedSet(bannedWords.begin(), bannedWords.end());
-        int count = 0;
-
-        for (const auto &word : message)
+        priority_queue<int> pq(maximumHeight.begin(), maximumHeight.end());
+        long long sum = pq.top();
+        long long lastval = pq.top();
+        pq.pop();
+        while (!pq.empty())
         {
-            if (bannedSet.find(word) != bannedSet.end())
+            int num = pq.top();
+            pq.pop();
+            if (num >= lastval)
             {
-                count++;
-
-                if (count >= 2)
-                    return true;
+                num = lastval - 1;
             }
+            if (num <= 0)
+            {
+                return -1;
+            }
+            sum += num;
+            lastval = num;
         }
-        return false;
+        return sum;
     }
 };
 
