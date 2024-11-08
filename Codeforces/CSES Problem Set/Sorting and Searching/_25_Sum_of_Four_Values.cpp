@@ -8,6 +8,7 @@ using namespace __gnu_pbds;
     ios_base::sync_with_stdio(false); \
     cin.tie(NULL);                    \
     cout.tie(NULL);
+
 typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
 #define int long long
 #define ld long double
@@ -29,35 +30,39 @@ int32_t main()
             arr[i].second = i + 1;
         }
         sort(arr.begin(), arr.end());
-        for (int i = 0; i < n; i++)
+        for (int m = 0; m < n; m++)
         {
-            if (i != 0 && arr[i].first == arr[i - 1].first)
+            if (m != 0 && arr[m].first == arr[m - 1].first)
             {
                 continue;
             }
 
-            int j = i + 1;
-            int k = n - 1;
-            while (j < k)
+            for (int i = m + 1; i < n; i++)
             {
-                int sum = arr[i].first + arr[j].first + arr[k].first;
-                if (sum == x)
+
+                int j = i + 1;
+                int k = n - 1;
+                while (j < k)
                 {
-                    vector<int> temp = {arr[i].second, arr[j].second, arr[k].second};
-                    sort(temp.begin(), temp.end());
-                    for (int i = 0; i < 3; i++)
+                    int sum = arr[m].first + arr[i].first + arr[j].first + arr[k].first;
+                    if (sum == x)
                     {
-                        cout << temp[i] << " ";
+                        vector<int> temp = {arr[i].second, arr[m].second, arr[j].second, arr[k].second};
+                        sort(temp.begin(), temp.end());
+                        for (int i = 0; i < 4; i++)
+                        {
+                            cout << temp[i] << " ";
+                        }
+                        return 0;
                     }
-                    return 0;
-                }
-                if (sum < x)
-                {
-                    j++;
-                }
-                else
-                {
-                    k--;
+                    if (sum < x)
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        k--;
+                    }
                 }
             }
         }

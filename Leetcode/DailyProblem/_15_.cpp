@@ -14,144 +14,53 @@ typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_
 const int mod = 1e9 + 7;
 int t, n, m, q, x;
 
-class AllOne
+class Solution
 {
-private:
-    // Doubly Linked List node to store count and a set of strings with that count
-    struct Node
-    {
-        int count;
-        list<string> keys; // You should use an unordered_set<string> here because it will have Amortized O(1) time complexity for erase() function.
-        Node *prev, *next;
-        Node(int c) : count(c), prev(nullptr), next(nullptr) {}
-    };
-
-    // Hash map to store key -> count
-    unordered_map<string, Node *> mp;
-
-    // Head and tail pointers for the doubly linked list
-    Node *head, *tail;
-
-    // Add a new node with count `c` after node `prevNode`
-    Node *addNodeAfter(Node *prevNode, int count)
-    {
-        Node *newNode = new Node(count);
-        newNode->next = prevNode->next;
-        newNode->prev = prevNode;
-        if (prevNode->next)
-        {
-            prevNode->next->prev = newNode;
-        }
-        prevNode->next = newNode;
-        if (tail == prevNode)
-        {
-            tail = newNode;
-        }
-        return newNode;
-    }
-
-    // Remove the node from the doubly linked list
-    void removeNode(Node *node)
-    {
-        node->prev->next = node->next;
-        if (node->next)
-        {
-            node->next->prev = node->prev;
-        }
-        if (tail == node)
-        {
-            tail = node->prev;
-        }
-        delete node;
-    }
-
 public:
-    AllOne()
+    bool checkInclusion(string s1, string s2)
     {
-        // Initialize head and tail dummy nodes for the doubly linked list
-        head = new Node(0);
-        tail = head;
-    }
-
-    void inc(string key)
-    {
-        if (mp.find(key) == mp.end())
+        int arr[26] = {0};
+        int n = s1.size(), m = s2.size();
+        for (int i = 0; i < n; i++)
         {
-            // Key doesn't exist, add it to the list after the head with count 1
-            if (head->next == nullptr || head->next->count != 1)
+            arr[s1[i] - 'a']++;
+        }
+        int temp[26];
+        copy(arr, arr + 26, temp);
+        int count = 0;
+        int j = 0;
+        for (int i = 0; i < m; i++)
+        {
+            int num = s2[i] - 'a';
+            if (temp[num])
             {
-                addNodeAfter(head, 1);
+                temp[num]--;
+                count++;
             }
-            head->next->keys.push_front(key);
-            mp[key] = head->next;
-        }
-        else
-        {
-            // Key exists, move it to the next count
-            Node *curNode = mp[key];
-            int curCount = curNode->count;
-            if (curNode->next == nullptr || curNode->next->count != curCount + 1)
+            else
             {
-                addNodeAfter(curNode, curCount + 1);
+                while ((s2[j] - 'a') != num)
+                {
+                    j++;
+                    temp[s2[j] - 'a']++;
+                    count--;
+                }
+                j++;
+                if (temp[s2[j] - 'a'] < arr[s2[j] - 'a'])
+                {
+                    count--;
+                    temp[s2[j] - 'a']++;
+                }
             }
-            curNode->next->keys.push_front(key);
-            mp[key] = curNode->next;
-            curNode->keys.remove(key);
-            if (curNode->keys.empty())
+
+            if (count == n)
             {
-                removeNode(curNode);
+                return true;
             }
         }
-    }
-
-    void dec(string key)
-    {
-        Node *curNode = mp[key];
-        int curCount = curNode->count;
-
-        // Remove the key if count becomes zero
-        curNode->keys.remove(key);
-        if (curCount == 1)
-        {
-            mp.erase(key);
-        }
-        else
-        {
-            // Move it to the previous count
-            if (curNode->prev == head || curNode->prev->count != curCount - 1)
-            {
-                addNodeAfter(curNode->prev, curCount - 1);
-            }
-            curNode->prev->keys.push_front(key);
-            mp[key] = curNode->prev;
-        }
-
-        // Remove the current node if it has no more keys
-        if (curNode->keys.empty())
-        {
-            removeNode(curNode);
-        }
-    }
-
-    string getMaxKey()
-    {
-        return (tail == head) ? "" : tail->keys.front();
-    }
-
-    string getMinKey()
-    {
-        return (head->next == nullptr) ? "" : head->next->keys.front();
+        return false;
     }
 };
-
-/**
- * Your AllOne object will be instantiated and called as such:
- * AllOne* obj = new AllOne();
- * obj->inc(key);
- * obj->dec(key);
- * string param_3 = obj->getMaxKey();
- * string param_4 = obj->getMinKey();
- */
 
 int32_t main()
 {
