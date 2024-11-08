@@ -20,22 +20,20 @@ int32_t main()
     cin >> t;
     while (t--)
     {
-        cin >> n >> x;
-
-        int ans = 0, temp = 0;
-        for (int i = 0; i < n; i++)
+        string s, t;
+        cin >> s >> t;
+        n = s.size();
+        m = t.size();
+        int ans = n + m;
+        int i = 0;
+        int j = 0;
+        while (i < n && j < m && s[i] == t[j])
         {
-            cin >> a;
-            if (a == 0 && temp)
-            {
-                ans++;
-                temp--;
-            }
-            if (a >= x)
-            {
-                temp += a;
-            }
+            i++;
+            j++;
         }
+        i = (i != 0) ? i - 1 : i;
+        ans = ans - i;
         cout << ans << "\n";
     }
 

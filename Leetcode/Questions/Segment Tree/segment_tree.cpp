@@ -5,7 +5,7 @@ typedef long long ll;
 typedef vector<ll> vl;
 
 ll N, n;
-vl segment(N * 2);
+vl segment(N * 4);
 vl arr(n);
 
 void segmentTree(int i, int l, int r)

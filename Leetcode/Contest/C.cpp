@@ -1,29 +1,69 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include <vector>
-#include <string>
-#include <unordered_set>
+class solve
+{
+public:
+    long long sum, x;
+    multiset<pair<long long, long long>> setk, setx;
+    unordered_map<long long, long long> mp;
+    solve(long long a)
+    {
+        a = x;
+        sum = 0;
+    }
+    void insert(long long ele)
+    {
+        mp[ele]++;
+        long long first = mp[ele];
+        long long second = ele;
+        if (setk.count({first - 1, second}))
+        {
+            setk.erase({first - 1, second});
+        }
+        setk.insert({first, second});
+        if (setx.size() < x)
+        {
+            setx.insert(*setk.rbegin());
+            setk.erase(*setk.rbegin());
+            x++;
+        }
+    }
+    void delet(long long ele)
+    {
+        long long first = mp[ele];
+        long long second = ele;
+        if (setk.count({first, second}))
+        {
+            setk.erase({first, second});
+            mp[ele]--;
+            if (mp[ele] > 0)
+            {
+                setk.insert({first - 1, second});
+            }
+        }
+        else
+        {
+            setx.erase({first, second});
+            mp[ele]--;
+            if (mp[ele] > 0)
+            {
+                setk.insert({first - 1, second});
+            }
+            if (setx.size() < x)
+            {
+                setx.insert(*setk.rbegin());
+                setk.erase(*setk.rbegin());
+            }
+        }
+    }
+};
 
 class Solution
 {
 public:
-    bool reportSpam(std::vector<std::string> &message, std::vector<std::string> &bannedWords)
+    vector<long long> findXSum(vector<int> &nums, int k, int x)
     {
-        unordered_set<string> bannedSet(bannedWords.begin(), bannedWords.end());
-        int count = 0;
-
-        for (const auto &word : message)
-        {
-            if (bannedSet.find(word) != bannedSet.end())
-            {
-                count++;
-
-                if (count >= 2)
-                    return true;
-            }
-        }
-        return false;
     }
 };
 

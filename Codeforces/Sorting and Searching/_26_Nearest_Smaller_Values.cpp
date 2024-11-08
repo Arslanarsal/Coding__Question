@@ -13,18 +13,34 @@ typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_
 #define int long long
 #define ld long double
 const int mod = 1e9 + 7;
-int t, n, q, m, x , k;
-
+int t, n, q, m, x;
+int arr[200005]{};
 int32_t main()
 {
     fastio;
     t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
     {
-        cin >> n >> k;
-        
+        cin >> n;
+        for (int i = 1; i <= n; i++)
+        {
+            cin >> arr[i];
+        }
+        stack<int> st;
+        st.push(0);
+        arr[0] = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            int num = arr[i];
+            while (arr[st.top()] >= num)
+            {
+                st.pop();
+            }
+            cout << st.top() << " ";
+            st.push(i);
+        }
     }
 
-return 0;
+    return 0;
 }
