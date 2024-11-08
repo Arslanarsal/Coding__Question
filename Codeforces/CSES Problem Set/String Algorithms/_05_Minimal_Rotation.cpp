@@ -17,28 +17,57 @@ int t, n, m, q, x;
 string least_rotation(string s)
 {
     s += s;
-    vector<int> f(s.size(), -1);
-    int k = 0;
-    for (int j = 1; j < s.size(); j++)
+
+    int n = s.size();
+    int i = 0;
+    int ans = 0;
+    while (i < n / 2)
     {
-        char sj = s[j];
-        int i = f[j - k - 1];
-        while (i != -1 && sj != s[k + i + 1])
+        int j = i + 1, k = i;
+        while (j < n && s[k] <= s[j])
         {
-            if (sj < s[k + i + 1])
-                k = j - i - 1;
-            i = f[i];
+            if (s[k] < s[j])
+            {
+                k = i;
+                ans = k;
+            }
+            else
+            {
+                k++;
+            }
+            j++;
         }
-        if (sj != s[k + i + 1])
+        while (i <= k)
         {
-            if (sj < s[k])
-                k = j;
-            f[j - k] = -1;
+            i += j - k;
         }
-        else
-            f[j - k] = i + 1;
     }
-    return s.substr(k, s.size() / 2);
+    return s.substr(ans, n / 2);
+}
+
+vector<string> duval(string s)
+{
+    int n = s.size();
+    int i = 0;
+    vector<string> factorization;
+    while (i < n)
+    {
+        int j = i + 1, k = i;
+        while (j < n && s[k] <= s[j])
+        {
+            if (s[k] < s[j])
+                k = i;
+            else
+                k++;
+            j++;
+        }
+        while (i <= k)
+        {
+            factorization.push_back(s.substr(i, j - k));
+            i += j - k;
+        }
+    }
+    return factorization;
 }
 
 int32_t main()
@@ -48,7 +77,15 @@ int32_t main()
     // cin >> t;
     while (t--)
     {
-        cin >> n;
+        // cin >> n;
+        string s;
+        cin >> s;
+        // vector<string> ans = duval(s);
+        // for (auto &&i : ans)
+        // {
+        //     cout << i << "\n";
+        // }
+        cout << least_rotation(s);
     }
 
     return 0;

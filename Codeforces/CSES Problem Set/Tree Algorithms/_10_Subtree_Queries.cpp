@@ -21,7 +21,7 @@ int32_t main()
     while (t--)
     {
         // cin >> n;
-        cout << "Hello World\n";
+       
     }
 
     return 0;
