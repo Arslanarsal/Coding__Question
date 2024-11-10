@@ -3,35 +3,52 @@ using namespace std;
 
 class Solution
 {
-public:
-    vector<int> getMaximumXor(vector<int> &nums, int maximumBit)
+    void insert(int arr[], int num)
     {
-        int n = nums.size();
-        vector<int> ans(n);
-        int temp = 0;
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < 31; i++)
         {
-            temp ^= nums[i];
-        }
-        int k = pow(2, maximumBit) - 1;
-        for (int i = n - 1; i >= 0; i--)
-        {
-            int num = k;
-            for (int j = 0; j < maximumBit; j++)
+            if ((num >> i) & 1)
             {
-                if ((temp >> j) & 1)
+                arr[i]++;
+            }
+        }
+    }
+
+    void numdele(int arr[], int num, int &a)
+    {
+        for (int i = 0; i < 31; i++)
+        {
+            if ((num >> i) & 1)
+            {
+                arr[i]--;
+                if (arr[i] == 0)
                 {
-                    num = num & (~(1 << j));
-                }
-                else
-                {
-                    num = num | (1 << j);
+                    a = a & (~(1 << i));
                 }
             }
-            ans[n - i - 1] = num;
-            temp ^= nums[i];
         }
-        return ans;
+    }
+
+public:
+    int minimumSubarrayLength(vector<int> &nums, int k)
+    {
+        int arr[32] = {0};
+        int a = 0;
+        int n = nums.size();
+        int ans = INT_MAX;
+        int j = 0;
+        for (int i = 0; i < n; i++)
+        {
+            a = a | nums[i];
+            insert(arr, nums[i]);
+            while (a >= k)
+            {
+                ans = min(ans, i - j + 1);
+                numdele(arr, nums[j], a);
+                j++;
+            }
+        }
+        return ans == INT_MAX ? -1 : ans;
     }
 };
 
