@@ -54,8 +54,8 @@ public:
 
 int main()
 {
-    Solution sol;
+    // Solution sol;
     // sol.canSortArray({18, 3, 8});
-
+    cout << "Hello world";
     return 0;
 }
