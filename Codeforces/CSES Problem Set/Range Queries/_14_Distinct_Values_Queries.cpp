@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// BeginCodeSnip{BIT}
 struct BIT
 {
     int size;
@@ -15,7 +14,7 @@ struct BIT
             bit[x] += v;
         }
     }
-    /** @return sum of the values in [0,b] */
+    
     int query(int b)
     {
         b++;

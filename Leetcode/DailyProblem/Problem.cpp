@@ -3,52 +3,31 @@ using namespace std;
 
 class Solution
 {
-    void insert(int arr[], int num)
-    {
-        for (int i = 0; i < 31; i++)
-        {
-            if ((num >> i) & 1)
-            {
-                arr[i]++;
-            }
-        }
-    }
-
-    void numdele(int arr[], int num, int &a)
-    {
-        for (int i = 0; i < 31; i++)
-        {
-            if ((num >> i) & 1)
-            {
-                arr[i]--;
-                if (arr[i] == 0)
-                {
-                    a = a & (~(1 << i));
-                }
-            }
-        }
-    }
-
 public:
-    int minimumSubarrayLength(vector<int> &nums, int k)
+    int maxEqualRowsAfterFlips(vector<vector<int>> &matrix)
     {
-        int arr[32] = {0};
-        int a = 0;
-        int n = nums.size();
-        int ans = INT_MAX;
-        int j = 0;
+        int n = matrix.size();
+        int m = matrix[0].size();
+        unordered_map<string, int> mp;
+        int ans = 1;
         for (int i = 0; i < n; i++)
         {
-            a = a | nums[i];
-            insert(arr, nums[i]);
-            while (a >= k)
+            string temp = "s";
+            for (int i = 1; i < m; i++)
             {
-                ans = min(ans, i - j + 1);
-                numdele(arr, nums[j], a);
-                j++;
+                if (matrix[i][0] == matrix[i][j])
+                {
+                    temp += 's';
+                }
+                else
+                {
+                    temp += 'b';
+                }
             }
+            mp[temp]++;
+            ans = max(ans, mp[temp]);
         }
-        return ans == INT_MAX ? -1 : ans;
+        return ans;
     }
 };
 

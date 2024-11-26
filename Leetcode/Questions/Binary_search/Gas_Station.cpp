@@ -1,28 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-double minimiseMaxDistance(vector<int> &arr, int k)
+class Solution
 {
-    int n = arr.size();
-    vector<int> howmany(n - 1, 0);
-    priority_queue<pair<int, int>> pq;
-    for (int i = 0; i < n - 1; i++)
+public:
+    double findSmallestMaxDist(vector<int> &stations, int k)
     {
-        pq.push({arr[i + 1] - arr[i], i});
-    }
+        int n = stations.size();
+        priority_queue<pair<long double, pair<long double, long double>>> pq;
+        for (int i = 1; i < n; i++)
+        {
+            long double dist = stations[i] - stations[i - 1];
+            pq.push({dist, {dist, 1}});
+        }
 
-    for (int i = 1; i <= k; i++)
-    {
-        auto it = pq.top();
-        pq.pop();
-        int ind = it.second;
-        howmany[ind]++;
-        long double diff = arr[ind + 1] - arr[ind];
-        long double secdiff = diff / (long double)(howmany[ind] + 1);
-        pq.push({secdiff, ind});
+        while (k--)
+        {
+            long double dist = pq.top().second.first;
+            long double num = pq.top().second.second;
+            pq.pop();
+            num++;
+            long double newdist = dist / num;
+            pq.push({newdist, {dist, num}});
+        }
+        long double result = pq.top().first;
+        return round(result * 100.0) / 100.0;
     }
-    return pq.top().first;
-}
+};
 
 int main()
 {
