@@ -1,62 +1,95 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
 
-#define all(x) (x).begin(), (x).end()
-#define sowhat                   \
-    ios::sync_with_stdio(false); \
-    cin.tie(0);
-#define print(a)          \
-    for (auto i : a)      \
-    {                     \
-        cout << i << ' '; \
-    }                     \
-    cout << endl;
-#define in binary_search
+#define fastio                        \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL);
 
-int arr[200000 + 10];
+typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
+#define int long long
+#define ld long double
+const int mod = 1e9 + 7;
+int t, n, q, m, x;
 
-void prec()
+pair<int, int> solve(int start, const vector<vector<int>> &adj)
 {
-    for (int i = 1; i <= 200000; i++)
+    int n = adj.size();
+    vector<int> dist(n, -1);
+    queue<int> que;
+    que.push(start);
+    dist[start] = 0;
+
+    int ansnd = start, maxDist = 0;
+    while (!que.empty())
     {
-        int steps = 0;
-        int n = i;
-        while (n > 0)
+        int node = que.front();
+        que.pop();
+        for (int nei : adj[node])
         {
-            n /= 3;
-            steps++;
+            if (dist[nei] == -1)
+            {
+                dist[nei] = dist[node] + 1;
+                que.push(nei);
+                if (dist[nei] > maxDist)
+                {
+                    maxDist = dist[nei];
+                    ansnd = nei;
+                }
+            }
         }
-        arr[i] = steps;
     }
-    // return steps;
+    return make_pair(ansnd, maxDist);
 }
 
-int main()
+int32_t main()
 {
-<<<<<<< HEAD
-    sowhat
-    prec();
+    fastio;
     int t;
     cin >> t;
 
     while (t--)
     {
-        int l, r;
-        cin >> l >> r;
-        int total_steps = 0;
-        for (int n = l + 1; n <= r; n++)
+        int vvv;
+        cin >> vvv;
+
+        vector<vector<int>> adj(vvv);
+
+        for (int i = 0; i < vvv - 1; i++)
         {
-            total_steps += arr[n];
+            int u, v;
+            cin >> u >> v;
+            adj[u].push_back(v);
+            adj[v].push_back(u);
         }
-        int ss = arr[l] * 2;
-        cout << total_steps + ss << endl;
-=======
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        int l, r;
->>>>>>> 612afbf91b3e5e60d4bf1d147177866db4ca57f6
+
+        pair<int, int> ans = solve(0, adj);
+        int nodee = ans.first;
+        int _ = ans.second;
+
+        ans = solve(nodee, adj);
+        int dd = ans.second;
+
+        vector<int> deg(vvv, 0);
+        for (int i = 0; i < vvv; i++)
+        {
+            deg[i] = adj[i].size();
+        }
+
+        vector<pair<int, int>> degnd;
+        for (int i = 0; i < vvv; i++)
+        {
+            degnd.emplace_back(deg[i], i);
+        }
+        sort(degnd.rbegin(), degnd.rend());
+
+        int temp1 = degnd[0].second;
+        int temp2 = degnd[1].second;
+
+        cout << dd << " " << deg[temp1] << " " << deg[temp2] << "\n";
     }
 
     return 0;

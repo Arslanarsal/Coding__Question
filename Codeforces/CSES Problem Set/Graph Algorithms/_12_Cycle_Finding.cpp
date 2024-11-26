@@ -50,7 +50,6 @@ int32_t main()
         return 0;
     }
 
-    // Re-run to find the exact cycle
     for (int i = 1; i <= n; i++)
     {
         x = relection[x];

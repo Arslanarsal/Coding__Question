@@ -44,11 +44,11 @@ int32_t main()
 {
     int n, m;
     cin >> n >> m;
-    N = n; // Assign the value of N here
+    N = n; 
     adj.resize(n + 1);
     adj1.resize(n + 1);
-    dist.resize(n + 1, INF);  // Initialize dist after N is set
-    dist1.resize(n + 1, INF); // Initialize dist after N is set
+    dist.resize(n + 1, INF); 
+    dist1.resize(n + 1, INF); 
     vector<t> e;
     for (int i = 0; i < m; i++)
     {
