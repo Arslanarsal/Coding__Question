@@ -85,6 +85,7 @@ public:
 
 int32_t main()
 {
+<<<<<<< HEAD
     fastio;
     t = 1;
     // cin >> t;
@@ -93,5 +94,10 @@ int32_t main()
         cin >> n;
     }
 
+=======
+    // Solution sol;
+    // sol.canSortArray({18, 3, 8});
+    cout << "Hello world";
+>>>>>>> 4df88fb8781923516cdc55ae3e6a3fe02114675d
     return 0;
 }
