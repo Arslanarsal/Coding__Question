@@ -53,7 +53,7 @@ int solve_2(int a, int b)
             b = lifting[b][i];
         }
     }
-    return lifting[a][0];
+    return lifting[a][0]; // One step high
 }
 
 int32_t main()

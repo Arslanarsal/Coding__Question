@@ -1,29 +1,54 @@
-#include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
+#include <iostream>
+#include <vector>
+#include <set>
 using namespace std;
-using namespace __gnu_pbds;
 
-#define fastio                        \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);                    \
-    cout.tie(NULL);
+int m, n;
+vector<int> res;
+vector<set<int>> adj;
 
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
-#define int long long int
-#define ld long double
-const int mod = 1e9 + 7;
-int t, n, q, m;
-
-int32_t main()
+void dfs(int curr)
 {
-    fastio;
-    t = 1;
-    // cin >> t;
-    while (t--)
+    auto &edges = adj[curr];
+    while (!edges.empty())
     {
-        cin >> n;
+        auto edge = *edges.begin();
+        edges.erase(edge);
+        adj[edge].erase(curr);
+        dfs(edge);
+    }
+    res.push_back(curr);
+}
+
+int main()
+{
+    cin >> n >> m;
+    adj.resize(n + 1);
+    for (int i = 1; i <= m; ++i)
+    {
+        int x, y;
+        cin >> x >> y;
+        adj[x].insert(y);
+        adj[y].insert(x);
     }
 
-    return 0;
+    for (int i = 1; i <= n; ++i)
+    {
+        if (adj[i].size() & 1)
+        {
+            cout << "IMPOSSIBLE\n";
+            return 0;
+        }
+    }
+
+    dfs(1);
+
+    if (res.size() != m + 1)
+    {
+        cout << "IMPOSSIBLE\n";
+        return 0;
+    }
+
+    for (auto &r : res)
+        cout << r << ' ';
 }
