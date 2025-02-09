@@ -15,10 +15,6 @@ typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_
 const int mod = 1e9 + 7;
 int t, n, q, m, x;
 
-#include <vector>
-#include <algorithm>
-#include <iostream>
-
 class Solution
 {
 public:
@@ -89,10 +85,11 @@ int32_t main()
     fastio;
     t = 1;
     // cin >> t;
-    while (t--)
-    {
-        cin >> n;
-    }
+    // while (t--)
+    // {
+    //     cin >> n;
+    // }
+    cout << "Hello World";
 
     return 0;
 }
