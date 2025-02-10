@@ -19,11 +19,12 @@ struct node
 void insert(string s, int i)
 {
     int x = 1;
-    for (int i = 0; i < s.size(); i++)
+    int n = s.size();
+    for (int i = 0; i < n; i++)
     {
         if (T[x].ch[s[i] - 'a'] == 0)
             T[x].ch[s[i] - 'a'] = ++I;
-            
+
         x = T[x].ch[s[i] - 'a'];
     }
     T[x].word.PB(i);
