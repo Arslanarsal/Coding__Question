@@ -17,42 +17,58 @@ int t, n, q, m, x;
 
 class Solution
 {
-public:
-    int maxFreeTime(int eventTime, vector<int> &startTime, vector<int> &endTime)
+    int solve(int i, int mask, vector<int> &nums, vector<int> &blcm, int &m, int &n)
     {
-        int n = startTime.size();
-        vector<int> gap, block;
-        int end = 0;
-        for (int i = 0; i < n; i++)
+        if (mask == (1<< m) )
         {
-            gap.push_back(startTime[i] - end);
-            end = endTime[i];
-            block.push_back(endTime[i] - startTime[i]);
+          return 0;
         }
-        gap.push_back(eventTime - end);
-        int m = gap.size();
-        vector<int> pre(m), sir(m);
-        pre[0] = gap[0];
-        for (int i = 1; i < m; i++)
+        if (i >= n)
         {
-            pre[i] = max(pre[i - 1], gap[i]);
+           return 1e9;
         }
-        sir[m - 1] = gap[m - 1];
-        for (int i = m - 2; i >= 0; i--)
+        
+        
+        int ans = 1e9;
+        ans = min(ans, solve(i + 1, mask, nums, blcm, m, n));
+
+        for (int subset = 0; subset < (1 << m); subset++)
         {
-            sir[i] = max(sir[i + 1], gap[i]);
+            int subsetLcm = blcm[subset];
+            int temp = (nums[i] / subsetLcm) * subsetLcm;
+            ans = min(ans, solve(i + 1, mask | subset, nums, blcm, m, n) + (temp - nums[i]));
         }
-        int ans = 0;
-        for (int i = 1; i < m; i++)
+    }
+
+    int findGcd(int a, int b)
+    {
+        return ((a * b) / __gcd(a, b));
+    }
+
+    void lcmm(vector<int> &target, vector<int> &blcm, int &m)
+    {
+        for (int mask = 0; mask < (1 << m); mask++)
         {
-            int temp = gap[i - 1] + gap[i];
-            if ((i >= 2 && pre[i - 2] >= block[i - 1]) || (i < m - 1 && sir[i + 1] >= block[i - 1]))
+            blcm[mask] = 1;
+            for (int i = 0; i < (1 << m); i++)
             {
-                temp += block[i - 1];
+                if (mask & (1 << i))
+                {
+                    blcm[mask] = findGcd(blcm[mask], target[i]);
+                }
             }
-            ans  = max(ans , temp);
         }
-        return ans;
+    }
+
+public:
+    int minimumIncrements(vector<int> &nums, vector<int> &target)
+    {
+
+        int n = nums.size();
+        int m = target.size();
+        vector<int> blcm(m);
+        lcmm(target, blcm, m);
+        return solve(0, 0, nums, blcm, m, n);
     }
 };
 

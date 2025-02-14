@@ -59,10 +59,20 @@ int32_t main()
         vector<int> b = solve(part[1]);
 
         int m = a.size();
+        int ans = 0;
         for (int i = 0; i < m; i++)
         {
-            auto it = upper_bound(b.begin(), b.end(), sum - a[i]);  
+            auto it = upper_bound(b.begin(), b.end(), sum - a[i]);
+            if (it != b.begin())
+            {
+                it--;
+            }
+            if ((sum - a[i]) == *it)
+            {
+                ans++;
+            }
         }
+        cout << ans << "\n";
     }
 
     return 0;

@@ -18,65 +18,54 @@ int t, n, q, m, x;
 class Solution
 {
 public:
-    int minMaxSums(vector<int> &nums, int k)
+    vector<vector<int>> sortMatrix(vector<vector<int>> &grid)
     {
-        sort(nums.begin(), nums.end());
-        int n = nums.size();
-        const int MOD = 1e9 + 7;
+        int n = grid.size();
 
-        // Precompute factorials and inverse factorials
-        vector<long long> factorial(n + 1, 1);
-        vector<long long> invFactorial(n + 1, 1);
-        for (int i = 1; i <= n; ++i)
+        priority_queue<int> q;
+        for (int i = 0; i < n; i++)
         {
-            factorial[i] = factorial[i - 1] * i % MOD;
-        }
-
-        // Compute inverse factorials using Fermat's Little Theorem
-        invFactorial[n] = pow(factorial[n], MOD - 2, MOD);
-        for (int i = n - 1; i >= 1; --i)
-        {
-            invFactorial[i] = invFactorial[i + 1] * (i + 1) % MOD;
-        }
-
-        // Lambda function for computing nCr
-        auto nCr = [&](int n, int r)
-        {
-            if (r > n || r < 0)
-                return 0LL;
-            return factorial[n] * invFactorial[r] % MOD * invFactorial[n - r] % MOD;
-        };
-
-        long long res = 0;
-        // Calculate the result
-        for (int size = 1; size <= k; ++size)
-        {
-            for (int i = 0; i < n; ++i)
+            int row = i;
+            int col = 0;
+            while (row < n && col < n)
             {
-                long long minContrib = nCr(n - i - 1, size - 1) * nums[i] % MOD;
-                long long maxContrib = nCr(i, size - 1) * nums[i] % MOD;
-                res = (res + maxContrib + minContrib) % MOD;
+                q.push(grid[row][col]);
+                row++;
+                col++;
+            }
+            row = i;
+            col = 0;
+            while (!q.empty())
+            {
+                grid[row][col] = q.top();
+                q.pop();
+                row++;
+                col++;
             }
         }
-        return res;
-    }
-
-private:
-    // Function for modular exponentiation
-    long long pow(long long base, long long exp, long long mod)
-    {
-        long long result = 1;
-        base %= mod;
-        while (exp > 0)
+        priority_queue<int, vector<int>, greater<int>> pq;
+        for (int i = 1; i < n; i++)
         {
-            if (exp % 2 == 1)
+            int row = 0;
+            int col = i;
+            while (row < n && col < n)
             {
-                result = result * base % mod;
+                pq.push(grid[row][col]);
+                row++;
+                col++;
             }
-            base = base * base % mod;
-            exp /= 2;
+            row = 0;
+            col = i;
+            while (!pq.empty())
+            {
+                grid[row][col] = pq.top();
+                pq.pop();
+                row++;
+                col++;
+            }
         }
-        return result;
+
+        return grid;
     }
 };
 
@@ -85,11 +74,10 @@ int32_t main()
     fastio;
     t = 1;
     // cin >> t;
-    // while (t--)
-    // {
-    //     cin >> n;
-    // }
-    cout << "Hello World";
+    while (t--)
+    {
+        cin >> n;
+    }
 
     return 0;
 }
