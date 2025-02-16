@@ -18,66 +18,27 @@ int t, n, q, m, x;
 class Solution
 {
 public:
-    vector<vector<int>> sortMatrix(vector<vector<int>> &grid)
+    int sumOfGoodNumbers(vector<int> &nums, int k)
     {
-        int n = grid.size();
-
-        priority_queue<int> q;
+        int ans = 0;
+        int n = nums.size();
         for (int i = 0; i < n; i++)
         {
-            int row = i;
-            int col = 0;
-            while (row < n && col < n)
+            if (i - k >= 0 && nums[i] > nums[i - k] || (i + k < n && nums[i] > nums[i + k]))
             {
-                q.push(grid[row][col]);
-                row++;
-                col++;
-            }
-            row = i;
-            col = 0;
-            while (!q.empty())
-            {
-                grid[row][col] = q.top();
-                q.pop();
-                row++;
-                col++;
+                ans += nums[i];
             }
         }
-        priority_queue<int, vector<int>, greater<int>> pq;
-        for (int i = 1; i < n; i++)
-        {
-            int row = 0;
-            int col = i;
-            while (row < n && col < n)
-            {
-                pq.push(grid[row][col]);
-                row++;
-                col++;
-            }
-            row = 0;
-            col = i;
-            while (!pq.empty())
-            {
-                grid[row][col] = pq.top();
-                pq.pop();
-                row++;
-                col++;
-            }
-        }
-
-        return grid;
+        return ans;
     }
 };
 
-int32_t main()
+int32_t
+main()
 {
-    fastio;
-    t = 1;
-    // cin >> t;
-    while (t--)
-    {
-        cin >> n;
-    }
-
+    Solution aol;
+    vector<int> nums = {2, 1};
+    int k = 2;
+    cout << aol.sumOfGoodNumbers(nums, k) << endl;
     return 0;
 }

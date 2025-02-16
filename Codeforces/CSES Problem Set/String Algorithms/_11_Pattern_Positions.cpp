@@ -16,7 +16,7 @@ int ans[500005]{};
 
 struct node
 {
-    int fail, child[26] = {}, cnt = 0;
+    int fail, child[26] = {}, cnt = -1;
     vector<int> words;
 } T[500005];
 
@@ -72,18 +72,35 @@ void run(string &s)
     for (int i = 0; i < n; i++)
     {
         x = T[x].child[s[i] - 'a'];
-        T[x].cnt++;
+        if (T[x].cnt == -1)
+            T[x].cnt = i + 1;
     }
 }
 
-int dfs(int i)
+// void dfs(int i)
+// {
+//     for (auto &&nei : adj[i])
+//         dfs(nei);
+//     for (auto &&w : T[i].words)
+//         ans[w] = T[i].cnt;
+//     return;
+// }
+
+void dfs(int i)
 {
-    int res = T[i].cnt;
     for (auto &&nei : adj[i])
-        res += dfs(nei);
+    {
+        dfs(nei);
+        if (T[nei].cnt != -1)
+        {
+            if (T[i].cnt == -1)
+                T[i].cnt = T[nei].cnt;
+            else
+                T[i].cnt = min(T[i].cnt, T[nei].cnt);
+        }
+    }
     for (auto &&w : T[i].words)
-        ans[w] = res;
-    return res;
+        ans[w] = T[i].cnt;
 }
 
 int32_t main()
@@ -93,17 +110,19 @@ int32_t main()
     string s;
     cin >> s;
     cin >> t;
+    vector<int> si(t);
     for (int i = 0; i < t; i++)
     {
         string j;
         cin >> j;
+        si[i] = j.size();
         insert(j, i);
     }
     built_Aho();
     run(s);
     dfs(1);
     for (int i = 0; i < t; i++)
-        cout << (ans[i] ? "YES" : "NO") << "\n";
+        cout << (ans[i] != -1 ? ans[i] - si[i] + 1 : ans[i]) << "\n";
 
     return 0;
 }

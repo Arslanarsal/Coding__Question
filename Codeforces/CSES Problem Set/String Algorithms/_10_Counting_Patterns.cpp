@@ -103,7 +103,7 @@ int32_t main()
     run(s);
     dfs(1);
     for (int i = 0; i < t; i++)
-        cout << (ans[i] ? "YES" : "NO") << "\n";
+        cout << ans[i] << "\n";
 
     return 0;
 }
