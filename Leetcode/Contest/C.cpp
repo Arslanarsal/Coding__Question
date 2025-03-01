@@ -1,92 +1,74 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
-
-#define fastio                        \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);                    \
-    cout.tie(NULL);
-
-#define int long long
-#define ld long double
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
-const int mod = 1e9 + 7;
-int t, n, q, m, x;
 
 class Solution
 {
 public:
-    int dp[50009][29][4];
-    string answer = "";
-
-    int solve(int i, int j, int c, string &s)
+    int dp[501][501][2][2][5];
+    int n, m;
+    int solve(int r, int c, int turn, int curr, int dir, vector<vector<int>> &grid)
     {
-        if (i == s.size())
-            return c < 3 ? 1e7 : 0;
-
-        int &ans = dp[i][j][c];
-        if (~ans)
-            return ans;
-        ans = solve(i + 1, j, min(c + 1, 3), s) + abs(j - (s[i] - 'a'));
-
-        if (c == 3 || !i)
+        if (r == n || c == m || r < 0 || c < 0)
+            return 0;
+        if (dp[r][c][turn][curr][dir] != -1)
+            return dp[r][c][turn][curr][dir];
+        if (curr && grid[r][c] != 2)
+            return 0;
+        if (!curr && grid[r][c] != 0)
+            return 0;
+        int ans = 0;
+        // 1 - top right , 2 - bottom right , 3 - bottom left , 4 - top left
+        if (dir == 1)
         {
-            for (int cc = 0; cc < 26; cc++)
-            {
-                ans = min(ans, solve(i + 1, cc, (j == cc ? min(c + 1, 3) : 1), s) + abs(cc - (s[i] - 'a')));
-            }
+            ans = 1 + solve(r - 1, c + 1, turn, !curr, 1, grid);
+            if (!turn)
+                ans = max(ans, 1 + solve(r + 1, c + 1, 1, !curr, 2, grid));
         }
-
-        return ans;
-    }
-
-    void build(int i, int j, int c, string &s)
-    {
-        if (i == s.size())
-            return;
-        int ans = dp[i][j][c];
-
-        if (c == 3 || !i)
+        if (dir == 2)
         {
-            for (int cc = 0; cc < 26; cc++)
+            ans = 1 + solve(r + 1, c + 1, turn, !curr, 2, grid);
+            if (!turn)
+                ans = max(ans, 1 + solve(r + 1, c - 1, 1, !curr, 3, grid));
+        }
+        if (dir == 3)
+        {
+            ans = 1 + solve(r + 1, c - 1, turn, !curr, 3, grid);
+            if (!turn)
+                ans = max(ans, 1 + solve(r - 1, c - 1, 1, !curr, 4, grid));
+        }
+        if (dir == 4)
+        {
+            ans = 1 + solve(r - 1, c - 1, turn, !curr, 4, grid);
+            if (!turn)
+                ans = max(ans, 1 + solve(r - 1, c + 1, 1, !curr, 1, grid));
+        }
+        return dp[r][c][turn][curr][dir] = ans;
+    }
+    int lenOfVDiagonal(vector<vector<int>> &grid)
+    {
+        n = grid.size(), m = grid[0].size();
+        memset(dp, -1, sizeof(dp));
+        int ans = 0;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
             {
-                if (ans == solve(i + 1, cc, (j == cc ? min(c + 1, 3) : 1), s) + abs(cc - (s[i] - 'a')))
+                if (grid[i][j] == 1)
                 {
-                    answer += char(cc + 'a');
-                    build(i + 1, cc, (j == cc ? min(c + 1, 3) : 1), s);
-                    return;
+                    ans = max(ans, 1 + solve(i + 1, j + 1, 0, 1, 2, grid));
+                    ans = max(ans, 1 + solve(i - 1, j + 1, 0, 1, 1, grid));
+                    ans = max(ans, 1 + solve(i + 1, j - 1, 0, 1, 3, grid));
+                    ans = max(ans, 1 + solve(i - 1, j - 1, 0, 1, 4, grid));
                 }
             }
         }
-
-        answer += char(j + 'a');
-        build(i + 1, j, min(c + 1, 3), s);
-    }
-
-    string minCostGoodCaption(string &s)
-    {
-        if (s.size() < 3)
-            return "";
-        memset(dp, -1, sizeof dp);
-        cout << solve(0, 27, 0, s) << '\n';
-        build(0, 27, 0, s);
-        return answer;
+        return ans;
     }
 };
 
 
-
 int32_t main()
 {
-    fastio;
-    t = 1;
-    // cin >> t;
-    while (t--)
-    {
-        cin >> n;
-    }
 
     return 0;
 }
