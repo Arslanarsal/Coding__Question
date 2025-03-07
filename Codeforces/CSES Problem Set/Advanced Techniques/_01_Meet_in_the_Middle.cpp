@@ -62,18 +62,9 @@ int32_t main()
         int ans = 0;
         for (int i = 0; i < m; i++)
         {
-            auto it = upper_bound(b.begin(), b.end(), sum - a[i]);
-            if (it != b.begin())
-            {
-                it--;
-            }
-            if ((sum - a[i]) == *it)
-            {
-                ans++;
-            }
+            ans += upper_bound(b.begin(), b.end(), sum - a[i]) - lower_bound(b.begin(), b.end(), sum - a[i]);
         }
         cout << ans << "\n";
     }
-
     return 0;
 }
