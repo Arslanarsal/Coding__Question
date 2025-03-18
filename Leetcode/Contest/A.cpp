@@ -1,44 +1,60 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
-#define fastio                        \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);                    \
-    cout.tie(NULL);
-
-#define int long long
-#define ld long double
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
-const int mod = 1e9 + 7;
-int t, n, q, m, x;
-
-class Solution
+class Spreadsheet
 {
+    vector<vector<int>> arr;
+
 public:
-    int sumOfGoodNumbers(vector<int> &nums, int k)
+    Spreadsheet(int rows)
     {
-        int ans = 0;
-        int n = nums.size();
-        for (int i = 0; i < n; i++)
+        arr.resize(rows + 1, vector<int>(26));
+    }
+
+    void setCell(string cell, int value)
+    {
+        int row = cell[0] - 'A';
+        int col = 0;
+        for (int i = 1; i < cell.size(); i++)
         {
-            if (i - k >= 0 && nums[i] > nums[i - k] || (i + k < n && nums[i] > nums[i + k]))
+            int digit = cell[i] - '0';
+            col = col * 10;
+            col += digit;
+        }
+        arr[row][col] = value;
+    }
+
+    void resetCell(string cell)
+    {
+        int row = cell[0] - 'A';
+        int col = 0;
+        for (int i = 1; i < cell.size(); i++)
+        {
+            int digit = cell[i] - '0';
+            col = col * 10;
+            col += digit;
+        }
+        arr[row][col] = 0;
+    }
+
+    int getValue(string formula)
+    {
+        if (formula[3] >= 'A' && formula[3] <= 'Z')
+        {
+            int row = formula[3] - 'A';
+            int col = 0;
+            for (int i = 4; formula[i] != '+'; i++)
             {
-                ans += nums[i];
+                int digit = formula[i] - '0';
+                col = col * 10;
+                col += digit;
             }
         }
-        return ans;
     }
 };
 
-int32_t
-main()
+int32_t main()
 {
-    Solution aol;
-    vector<int> nums = {2, 1};
-    int k = 2;
-    cout << aol.sumOfGoodNumbers(nums, k) << endl;
+
     return 0;
 }
