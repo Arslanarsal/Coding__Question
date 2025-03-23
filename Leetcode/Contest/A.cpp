@@ -1,44 +1,104 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
-
-#define fastio                        \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);                    \
-    cout.tie(NULL);
-
-#define int long long
-#define ld long double
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> oSet; // [find_by_order ==> given address at index] |==| [order_of_key ==> Number of element smaller then X]y
-const int mod = 1e9 + 7;
-int t, n, q, m, x;
 
 class Solution
 {
 public:
-    int sumOfGoodNumbers(vector<int> &nums, int k)
+    struct Node
     {
-        int ans = 0;
-        int n = nums.size();
+        unordered_map<char, Node *> child;
+        int cnt;
+        Node()
+        {
+            cnt = 0;
+        }
+    };
+
+    class trie
+    {
+    public:
+        Node *root = nullptr;
+        unordered_map<int, int> mp;
+        set<int> st;
+        trie()
+        {
+            root = new Node();
+        }
+        void insert(string &s, int &k)
+        {
+            int n = s.size();
+            Node *temp = root;
+            for (int i = 0; i < n; i++)
+            {
+                char ch = s[i] - 'a';
+                if (!(temp->child.count(ch)))
+                    temp->child[ch] = new Node();
+
+                temp = temp->child[ch];
+                temp->cnt++;
+                if (temp->cnt >= k)
+                {
+                    mp[i + 1]++;
+                    if (mp[i + 1] == 1)
+                        st.insert(i + 1);
+                }
+            }
+        }
+
+        int delet(string &s, int &k)
+        {
+            int n = s.size();
+            Node *temp = root;
+            vector<int> arr;
+            for (int i = 0; i < n; i++)
+            {
+                char ch = s[i] - 'a';
+                temp = temp->child[ch];
+                if (temp->child[ch]->cnt >= k && mp.count(i + 1) && (mp[i + 1] - 1) == 0)
+                {
+                    arr.push_back(i + 1);
+                    st.erase(i + 1);
+                }
+            }
+            int ans = 0;
+            if (st.size())
+                ans = *st.rbegin();
+
+            for (auto &&i : arr)
+            {
+                st.insert(i);
+            }
+            return ans;
+        }
+    };
+
+    vector<int> longestCommonPrefix(vector<string> &words, int k)
+    {
+        trie *temp = new trie();
+        int n = words.size();
         for (int i = 0; i < n; i++)
         {
-            if (i - k >= 0 && nums[i] > nums[i - k] || (i + k < n && nums[i] > nums[i + k]))
-            {
-                ans += nums[i];
-            }
+            temp->insert(words[i], k);
+        }
+        vector<int> ans(n, 0);
+        for (int i = 0; i < n; i++)
+        {
+            ans[i] = temp->delet(words[i], k);
         }
         return ans;
     }
 };
 
-int32_t
-main()
+int32_t main()
 {
     Solution aol;
-    vector<int> nums = {2, 1};
+    vector<string> nums = {"jump", "run", "run", "jump", "run"};
     int k = 2;
-    cout << aol.sumOfGoodNumbers(nums, k) << endl;
+    vector<int> str = aol.longestCommonPrefix(nums, k);
+    for (int i = 0; i < str.size(); i++)
+    {
+        cout << str[i] << " ";
+    }
+
     return 0;
 }
