@@ -1,9 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+<<<<<<< HEAD
 class Solution
+=======
+class Spreadsheet
+>>>>>>> a77668d6f94a6ae13b50b5acfcf751fa03ac7f98
 {
+    vector<vector<int>> arr;
+
 public:
+<<<<<<< HEAD
     struct Node
     {
         unordered_map<char, Node *> child;
@@ -84,13 +91,58 @@ public:
         for (int i = 0; i < n; i++)
         {
             ans[i] = temp->delet(words[i], k);
+=======
+    Spreadsheet(int rows)
+    {
+        arr.resize(rows + 1, vector<int>(26));
+    }
+
+    void setCell(string cell, int value)
+    {
+        int row = cell[0] - 'A';
+        int col = 0;
+        for (int i = 1; i < cell.size(); i++)
+        {
+            int digit = cell[i] - '0';
+            col = col * 10;
+            col += digit;
         }
-        return ans;
+        arr[row][col] = value;
+    }
+
+    void resetCell(string cell)
+    {
+        int row = cell[0] - 'A';
+        int col = 0;
+        for (int i = 1; i < cell.size(); i++)
+        {
+            int digit = cell[i] - '0';
+            col = col * 10;
+            col += digit;
+        }
+        arr[row][col] = 0;
+    }
+
+    int getValue(string formula)
+    {
+        if (formula[3] >= 'A' && formula[3] <= 'Z')
+        {
+            int row = formula[3] - 'A';
+            int col = 0;
+            for (int i = 4; formula[i] != '+'; i++)
+            {
+                int digit = formula[i] - '0';
+                col = col * 10;
+                col += digit;
+            }
+>>>>>>> a77668d6f94a6ae13b50b5acfcf751fa03ac7f98
+        }
     }
 };
 
 int32_t main()
 {
+<<<<<<< HEAD
     Solution aol;
     vector<string> nums = {"jump", "run", "run", "jump", "run"};
     int k = 2;
@@ -99,6 +151,8 @@ int32_t main()
     {
         cout << str[i] << " ";
     }
+=======
+>>>>>>> a77668d6f94a6ae13b50b5acfcf751fa03ac7f98
 
     return 0;
 }
